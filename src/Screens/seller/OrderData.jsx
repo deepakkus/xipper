@@ -1,0 +1,127 @@
+export const ordersData = [
+    {
+      _id: {
+        $oid: "66a8a8f2d1cfea87610938d1",
+      },
+      id: "5522035605688",
+      currency: "INR",
+      current_subtotal_price: "260.00",
+      current_total_price: "306.80",
+      current_total_tax: "46.80",
+      financial_status: "paid",
+      order_number: 1072,
+      order_status_url:
+        "https://newteststore098.myshopify.com/77252690104/orders/ce48ee922f6120ba3a6ae31321fab687/authenticate?key=dd2a30c965b976ff361c035de9794f32&none=VQBRA1NCVVhRR1VG",
+      phone: "+918724915817",
+      billing_address: {
+        first_name: "Avishek",
+        address1: "",
+        phone: "+918724915817",
+        city: "",
+        zip: null,
+        province: "Assam",
+        country: "India",
+        last_name: "Dutta",
+        address2: null,
+        company: null,
+        latitude: null,
+        longitude: null,
+        name: "Avishek Dutta",
+        country_code: "IN",
+        province_code: "AS",
+      },
+      line_items: [
+        {
+          id: "13097520038072",
+          admin_graphql_api_id: "gid://shopify/LineItem/13097520038072",
+          current_quantity: 1,
+          name: "gloves",
+          price: "60.00",
+          size: "S",
+          product_id: {
+            $numberLong: "9156806443192",
+          },
+          quantity: 1,
+          title: "gloves",
+          vendor: "newteststore098",
+          variant_id: {
+            $numberLong: "48357066571960",
+          },
+          image_url:
+            "https://cdn.shopify.com/s/files/1/0772/5269/0104/files/pexels-dom-j-7304-45057.jpg?v=1722321095",
+          tracking_number: "111111111111",
+          tracking_url: "https://www.delhivery.com/track/package/111111111111",
+        },
+        {
+          id: "13097520070840",
+          admin_graphql_api_id: "gid://shopify/LineItem/13097520070840",
+          current_quantity: 1,
+          name: "jeans",
+          size: "36",
+          price: "200.00",
+          product_id: {
+            $numberLong: "9151352602808",
+          },
+          quantity: 1,
+          title: "jeans",
+          vendor: "newteststore098",
+          variant_id: {
+            $numberLong: "48340721500344",
+          },
+          image_url:
+            "https://cdn.shopify.com/s/files/1/0772/5269/0104/files/pexels-neosiam-603022.jpg?v=1722239405",
+          tracking_number: "111111111111",
+          tracking_url: "https://www.delhivery.com/track/package/111111111111",
+        },
+        {
+          id: "13097520070840",
+          admin_graphql_api_id: "gid://shopify/LineItem/13097520070840",
+          current_quantity: 1,
+          name: "jeans",
+          size: "36",
+          price: "200.00",
+          product_id: {
+            $numberLong: "9151352602808",
+          },
+          quantity: 1,
+          title: "jeans",
+          vendor: "newteststore098",
+          variant_id: {
+            $numberLong: "48340721500344",
+          },
+          image_url:
+            "https://cdn.shopify.com/s/files/1/0772/5269/0104/files/pexels-neosiam-603022.jpg?v=1722239405",
+          tracking_number: "111111111111",
+          tracking_url: "https://www.delhivery.com/track/package/111111111111",
+        },
+      ],
+      shipping_address: {
+        first_name: "Avishek",
+        address1: "",
+        phone: "+918724915817",
+        city: "",
+        zip: null,
+        province: "Assam",
+        country: "India",
+        last_name: "Dutta",
+        address2: null,
+        company: null,
+        latitude: null,
+        longitude: null,
+        name: "Avishek Dutta",
+        country_code: "IN",
+        province_code: "AS",
+      },
+      createdAt: {
+        $date: {
+          $numberLong: "1722329331134",
+        },
+      },
+      updatedAt: {
+        $date: {
+          $numberLong: "1722329387345",
+        },
+      },
+      __v: 0,
+    },
+  ];

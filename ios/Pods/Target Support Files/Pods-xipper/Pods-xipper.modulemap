@@ -1,0 +1,6 @@
+framework module Pods_xipper {
+  umbrella header "Pods-xipper-umbrella.h"
+
+  export *
+  module * { export * }
+}
