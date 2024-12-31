@@ -361,7 +361,7 @@ const SignIn = ({ navigation }) => {
                 // onChangeText={setPhoneNo}
                 onChangeText={(text) => handleChange('phoneNumber', text)}
                 value={form.phoneNumber}
-                className="text-left text-gray-300 font-pregular text-sm flex-1 mt-1  text-black "
+                className= {Platform.OS === 'ios' ? "text-left text-gray-300 font-pregular text-sm flex-1 m-3  text-black " : "text-left text-gray-300 font-pregular text-sm flex-1 mt-1  text-black "}
               />
             </View>
           </View>
