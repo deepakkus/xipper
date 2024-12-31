@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { Platform } from 'react-native';
 import PushNotification from 'react-native-push-notification';
+
 
 const NotificationSetup = () => {
   useEffect(() => {
@@ -48,8 +50,9 @@ const NotificationSetup = () => {
         }
       );
     };
-
-    createNotificationChannels();
+    if (Platform.OS === 'android') {
+      createNotificationChannels();
+    }
   }, []);
 
   return null;

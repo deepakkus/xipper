@@ -369,6 +369,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 16,
     width: "80%",
+    maxHeight: Platform.OS === 'ios' ? 250 : 0
   },
   header: {
     flexDirection: "row",

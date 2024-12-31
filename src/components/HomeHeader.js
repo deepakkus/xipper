@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView, Platform } from "react-native";
 import React from "react";
 import {
   NonBusinessBellIcon,
@@ -48,7 +48,7 @@ const HomeHeader = ({ handleRoomClick = () => { }, isBusiness, toggleBusiness, i
   return (
     <>
       <View
-        className={`bg-${selectedProfile.type} gap-4 p-5 shadow-xl`}
+        className= {Platform.OS === 'ios' ? `bg-${selectedProfile.type} gap-4 p-12 shadow-xl` : `bg-${selectedProfile.type} gap-4 p-5 shadow-xl`}
         style={{
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 30,

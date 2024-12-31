@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Image, Text, Pressable, StyleSheet, ScrollView } from "react-native";
+import { View, TextInput, Image, Text, Pressable, StyleSheet, ScrollView, Platform } from "react-native";
 import { MicIcon } from "../assets/images/Icons/HomeIcon";
 
 const SearchBar = ({
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: "#333",
+    height: Platform.OS === 'ios' ? 50 : 0
   },
   suggestionsContainer: {
     position: "absolute",

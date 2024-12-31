@@ -86,7 +86,7 @@ const Notifications = () => {
 
     return (
         <SafeAreaProvider>
-            <View className="p-4 h-full">
+            <View className= {Platform.OS === 'ios' ?  "p-10 h-full" :  "p-4 h-full"}>
                 <View className="flex items-center flex-row gap-10">
                     <Pressable onPress={() => nav.goBack()} className="h-auto pb-3">
                         <BackArrowIcon />

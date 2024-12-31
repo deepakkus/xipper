@@ -320,7 +320,7 @@ const SignIn = ({ navigation }) => {
             Didn't receive an OTP?
           </Text>
           <Pressable onPress={resendOTP} disabled={timeLeft !== 0}>
-            <Text className="my-2 text-sm font-pregular text-center  text-user mb-8 underline">
+            <Text className="my-2 text-sm font-pregular text-center text-user mb-8 underline">
               Resend OTP
             </Text>
           </Pressable>

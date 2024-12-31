@@ -450,7 +450,8 @@ import {
     ScrollView,
     FlatList,
     Pressable,
-    Modal
+    Modal,
+    Platform
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { BackArrowIcon } from "../../assets/images/Icons/ArrowIcon";
@@ -621,7 +622,7 @@ const HotelDetails = () => {
                     style={{ width: '100%', height: 450, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}
                     resizeMode="cover"
                 />
-                <View className="absolute w-full p-6">
+                <View className= {Platform.OS === 'ios' ? "absolute w-full p-10" : "absolute w-full p-6"}>
                     <View className="flex-row justify-between items-center">
                         <Pressable onPress={() => nav.pop()}>
                             <BackArrowIcon color="#fff" />

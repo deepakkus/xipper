@@ -419,7 +419,7 @@ const TabsLayouts = () => {
             // elevation: 10,
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
-            height: 73,
+            height: Platform.OS === 'ios'? 100 : 73,
             position: 'absolute',
             bottom: 0,
             left: 0,
