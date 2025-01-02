@@ -8,7 +8,7 @@ const AddButton = ({ title, Icon, onPress }) => {
       className=" absolute w-full left-5 bottom-20"
       onPress={onPress}
     >
-      <View className="flex-row  items-center  justify-between  bg-gray-200 p-3 rounded-lg">
+      <View className={Platform.OS === 'ios' ? "flex-row  items-center  justify-between  bg-gray-200 p-3 mb-8 rounded-lg" : "flex-row  items-center  justify-between  bg-gray-200 p-3 rounded-lg"}>
         <View className="flex-row item-center ">
           <View className=" px-2 mt-0.5 ">{Icon}</View>
           <Text className="font-pregular text-md  ml-3 mt-1  text-gray-400 items-center">
