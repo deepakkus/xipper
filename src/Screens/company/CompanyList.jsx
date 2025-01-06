@@ -152,7 +152,7 @@ const CompanyList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: (Platform.OS === 'ios') ? 40 : 10,
     backgroundColor: 'white',
   },
   headerContainer: {

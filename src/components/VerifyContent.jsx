@@ -418,7 +418,7 @@ const VerifyContent = ({ setHeading, toggleModal, setIsCheckIn, hotelData }) => 
             {step === 1 && (
                 <View>
                     <View className="w-full flex gap-2 flex-row justify-between mt-4">
-                        <View className="w-[48%] flex-row items-center p-1 border border-gray-200 rounded-md">
+                        <View className={Platform.OS === 'ios' ? "z-[99] w-[48%] flex-column overflow-visible items-center p-1 border border-gray-200 rounded-md" : "w-[48%] flex-row items-center p-1 border border-gray-200 rounded-md"}>
                             <Calender color={"#000000"} />
                             <TextInput
                                 value={formData.checkIn ? formatDate(new Date(formData.checkIn)) : ''}
@@ -435,10 +435,11 @@ const VerifyContent = ({ setHeading, toggleModal, setIsCheckIn, hotelData }) => 
                                     minimumDate={new Date()}
                                     display={Platform.OS === 'ios' ? 'inline' : ''}
                                     onChange={(e, date) => handleDateChange(e, date, "checkIn")}
+                                    style={Platform.OS === 'ios' ? {width: 200,backgroundColor: "gray"} : ''}
                                 />
                             )}
                         </View>
-                        <View className="w-[48%] flex-row items-center p-1 border border-gray-200 rounded-md">
+                        <View className={Platform.OS === 'ios' ? "z-[9] w-[48%] flex-column overflow-visible items-center p-1 border border-gray-200 rounded-md" : "w-[48%] flex-row items-center p-1 border border-gray-200 rounded-md"}>
                             <Calender color={"#000000"} />
                             <TextInput
                                 value={formData.checkOut ? formatDate(new Date(formData.checkOut)) : ''}
@@ -455,6 +456,7 @@ const VerifyContent = ({ setHeading, toggleModal, setIsCheckIn, hotelData }) => 
                                     minimumDate={new Date(formData.checkIn)}
                                     display={Platform.OS === 'ios' ? 'inline' : ''}
                                     onChange={(e, date) => handleDateChange(e, date, "checkOut")}
+                                    style={Platform.OS === 'ios' ? {width: 200,backgroundColor: "gray"} : ''}
                                 />
                             )}
                         </View>

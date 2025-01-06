@@ -19,6 +19,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 import { BackArrowIcon } from "../../assets/images/Icons/ArrowIcon";
 import OtpComponent from '../../components/OtpComponent';
 import ButtonComponent from '../../components/ButtonComponent';
@@ -49,7 +50,7 @@ const SignIn = ({ navigation }) => {
   useEffect(() => {
     GoogleSignin.configure({
       offlineAccess: false,
-      iosClientId  : '834003854667-vv34ltslgkjjclm22ij6j9qe1menoaf6.apps.googleusercontent.com',
+      iosClientId  : GOOGLE_WEB_CLIENT_ID,//'834003854667-vv34ltslgkjjclm22ij6j9qe1menoaf6.apps.googleusercontent.com',
       webClientId: '',//GOOGLE_WEB_CLIENT_ID,
       scopes: ["profile", "email"],
     });

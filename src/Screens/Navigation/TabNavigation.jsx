@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, Modal, Pressable, Animated, Image } from "react-native";
+import { View, Text, Modal, Pressable, Animated, Image, Platform } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeIcon, InboxIcon, MenuIcon, OrdersIcon, ProfileIcon, AnalyticsIcon, OffersIcon } from "../../assets/images/Icons/TabBarIcon";
 import { useNavigation } from "@react-navigation/native";
@@ -231,7 +231,7 @@ const MenuModal = ({ visible, onClose, onSelectOption }) => {
           <View className={`${selectedProfile.type === 'user' ? " bg-user" : selectedProfile.type === 'company' ? "bg-company" : "bg-seller"
             }`} style={{
               width: 250,
-              paddingVertical: 20,
+              paddingVertical: (Platform.OS === 'ios') ? 40 : 20,
               paddingHorizontal: 20,
               height: "100%",
               display: "flex",

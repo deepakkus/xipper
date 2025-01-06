@@ -27,12 +27,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.834003854667-vv34ltslgkjjclm22ij6j9qe1menoaf6</string>
+				<string>com.googleusercontent.apps.89713830439-ifto2l4dsq5pcplast2ka4s9moj79ic7</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -62,8 +64,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 </dict>
 </plist>
