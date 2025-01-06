@@ -435,7 +435,7 @@ const VerifyContent = ({ setHeading, toggleModal, setIsCheckIn, hotelData }) => 
                                     minimumDate={new Date()}
                                     display={Platform.OS === 'ios' ? 'inline' : ''}
                                     onChange={(e, date) => handleDateChange(e, date, "checkIn")}
-                                    style={Platform.OS === 'ios' ? {width: 200,backgroundColor: "gray"} : ''}
+                                    style={Platform.OS === 'ios' ? {width: 200, backgroundColor: "#FAF9F6"} : ''}
                                 />
                             )}
                         </View>
@@ -456,7 +456,7 @@ const VerifyContent = ({ setHeading, toggleModal, setIsCheckIn, hotelData }) => 
                                     minimumDate={new Date(formData.checkIn)}
                                     display={Platform.OS === 'ios' ? 'inline' : ''}
                                     onChange={(e, date) => handleDateChange(e, date, "checkOut")}
-                                    style={Platform.OS === 'ios' ? {width: 200,backgroundColor: "gray"} : ''}
+                                    style={Platform.OS === 'ios' ? {width: 200,backgroundColor: "#FAF9F6"} : ''}
                                 />
                             )}
                         </View>
