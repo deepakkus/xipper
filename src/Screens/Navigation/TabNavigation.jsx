@@ -148,7 +148,7 @@ const MenuModal = ({ visible, onClose, onSelectOption }) => {
     { icon: <PrivacyIcon />, name: "Privacy and Policy", route: "Privacy" },
     { icon: <Terms />, name: "Terms of use", route: "Terms" },
     { icon: <Terms />, name: "Contact Us", route: "Contact" },
-    { icon: <Delete />, name: "Delete account", route: "Support" }
+    { icon: <Delete />, name: "Delete account", route: "DeleteAccount" }
   ];
 
   const Menus = [
