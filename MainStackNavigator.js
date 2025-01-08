@@ -46,6 +46,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CircularLoader from './src/components/CircularLoader';
 import BillSeller from './src/Screens/seller/BillSeller';
 import Orders from './src/Screens/seller/Order';
+import SpaCart from './src/components/SpaCart';
+import DeleteAccount from './src/components/DeleteAccount';
 
 const Stack = createNativeStackNavigator();
 
@@ -119,10 +121,12 @@ const MainStackNavigator = () => {
       <Stack.Screen name="LaundrayChart" component={LaundrayChart} />
       <Stack.Screen name="LaundaryCart" component={LaundaryCart} />
       <Stack.Screen name="SpaChart" component={SpaChart} />
+      <Stack.Screen name="SpaCart" component={SpaCart} />
       <Stack.Screen name="MiniBar" component={MiniBar} />
       <Stack.Screen name="Transactiondetails" component={Transactiondetails} />
       <Stack.Screen name="BillSeller" component={BillSeller} />
       <Stack.Screen name="Orders" component={Orders} />
+      <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
     </Stack.Navigator>
   );
 };

@@ -110,7 +110,7 @@ const LaundrayChart = () => {
 
     return (
         <View className="flex-1">
-            <View className="flex flex-row items-center mt-1 ml-2">
+            <View className={(Platform.OS === 'ios') ? "flex flex-row items-center mt-10 ml-2" : "flex flex-row items-center mt-1 ml-2"}>
                 <Pressable onPress={() => navigation.navigate("HotelDetails")}>
                     <BackArrowIcon />
                 </Pressable>

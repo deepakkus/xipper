@@ -184,7 +184,7 @@ const FoodCard = () => {
 
     return (
         <SafeAreaView className="h-full">
-            <View className="flex flex-row items-center mt-1 ml-2">
+            <View className={(Platform.OS === 'ios') ? "flex flex-row items-center p-1 mt-1 ml-2" : "flex flex-row items-center mt-1 ml-2" }>
                 <Pressable className="py-2 mr-2 px-1" onPress={() => nav.goBack()}>
                     <BackArrowIcon />
                 </Pressable>

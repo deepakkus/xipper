@@ -8,7 +8,7 @@ const Privacy = () => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView className="p-3" showsVerticalScrollIndicator={false}>
+    <ScrollView className={(Platform.OS === 'ios') ? "p-6 m-5" : "p-3"} showsVerticalScrollIndicator={false}>
       {/* <StatusBar color="#555" /> */}
       <View className="flex-row justify-between items-center">
         <Pressable

@@ -91,7 +91,7 @@ export default function LaundaryCart() {
         <ScrollView
             className={`flex-1 h-full bg-gray-100 p-4`}
             showsVerticalScrollIndicator={false}>
-            <View className="flex-row items-center mb-4 justify-between">
+            <View className={(Platform.OS === 'ios') ? "flex-row items-center px-5 py-8 mb-4 justify-between" : "flex-row items-center mb-4 justify-between"}>
                 <Pressable onPress={handleBack}>
                     <Text className="text-lg">
                         <BackArrowIcon />

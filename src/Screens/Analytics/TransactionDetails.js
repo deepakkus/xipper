@@ -80,7 +80,7 @@ export default function Transactiondetails() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
-            <View className="w-full justify-between flex flex-row items-center mt-8">
+            <View className={(Platform.OS === 'ios') ? "w-full justify-between flex flex-row items-center mt-8 p-2" : "w-full justify-between flex flex-row items-center mt-8"}>
               <Pressable onPress={() => navigation.goBack()} className="">
                 <BackArrowIcon />
               </Pressable>

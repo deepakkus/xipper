@@ -195,8 +195,9 @@ const CheckInContent = ({
             {
                 name: "Restaurant Menu",
                 icon: require("../assets/images/Checkin/F&B.png"),
-                action: () => {
-                    navigation.navigate("FoodCard");
+                action: () => { 
+                    toggleModal();   
+                    navigation.navigate("FoodCard");                
                 },
             },
             {
@@ -318,6 +319,7 @@ const CheckInContent = ({
                 name: "Laundry",
                 icon: require("../assets/images/HouseKeeping/Laundry.png"),
                 action: () => {
+                    toggleModal();
                     navigation.navigate("LaundrayChart")
                 },
             },

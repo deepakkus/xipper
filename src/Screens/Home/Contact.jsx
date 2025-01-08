@@ -48,8 +48,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: (Platform.OS === 'ios') ? 20 : 10,
     marginBottom: 32,
+    padding: (Platform.OS === 'ios') ? 20 : 0,
   },
   backButton: {
     marginRight: 8,

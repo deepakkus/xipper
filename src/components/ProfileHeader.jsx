@@ -17,7 +17,7 @@ const ProfileHeader = () => {
 
   return (
     <View className="mb-6">
-      <View className="flex-row justify-between items-center">
+      <View className={Platform.OS === 'ios' ? "flex-row justify-between items-center p-2" : "flex-row justify-between items-center"}>
         <Pressable onPress={() => navigation.goBack()} className="h-auto">
           <BackArrowIcon />
         </Pressable>

@@ -231,7 +231,7 @@ const MenuModal = ({ visible, onClose, onSelectOption }) => {
           <View className={`${selectedProfile.type === 'user' ? " bg-user" : selectedProfile.type === 'company' ? "bg-company" : "bg-seller"
             }`} style={{
               width: 250,
-              paddingVertical: (Platform.OS === 'ios') ? 40 : 20,
+              paddingVertical: (Platform.OS === 'ios') ? 60 : 20,
               paddingHorizontal: 20,
               height: "100%",
               display: "flex",

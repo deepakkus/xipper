@@ -97,7 +97,7 @@ export default function Bill({ orderData, hotelData, request }) {
 
   return (
     <ScrollView className={Platform.OS === 'ios' ? "flex-1 bg-gray-100 p-3 mt-10" : "flex-1 bg-gray-100 p-3"} showsVerticalScrollIndicator={false}>
-      <View className="flex-row items-center mb-2">
+      <View className={Platform.OS === 'ios' ? "flex-row items-center p-2 mb-2" : "flex-row items-center mb-2"}>
         <Pressable onPress={handleBackButtonClick}>
           <BackArrowIcon />
         </Pressable>

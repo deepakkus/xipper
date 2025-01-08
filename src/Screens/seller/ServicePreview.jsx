@@ -116,7 +116,7 @@ export default function ServicePreview() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: (Platform.OS === 'ios') ? 38 : 16,
   },
   header: {
     flexDirection: 'row',

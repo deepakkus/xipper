@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
+        padding: (Platform.OS === 'ios') ? 15 : 10,
     },
     backButton: {
         marginRight: 16,
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
         marginLeft: 100,
         marginTop:5
     },
-
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -137,8 +136,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#E5E5E5',
     },
-
-
     searchIcon: {
         marginRight: 8,
     },

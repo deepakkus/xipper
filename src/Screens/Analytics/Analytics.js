@@ -200,7 +200,7 @@ import {
               <View className="w-full justify-center items-center p-2">
                 <Pressable
                   onPress={() => navigation.goBack()}
-                  className="absolute left-0 z-10"
+                  className={(Platform.OS === 'ios') ? "absolute left-4 z-10" : "absolute left-0 z-10"}
                 >
                   <BackArrowIcon />
                 </Pressable>

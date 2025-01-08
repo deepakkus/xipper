@@ -115,11 +115,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4f4f4',
-    padding: 10,
+    padding: (Platform.OS === 'ios') ? 30 : 10,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: (Platform.OS === 'ios') ? 10 : 0,
   },
   heading: {
     fontSize: 24,

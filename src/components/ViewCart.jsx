@@ -129,7 +129,7 @@ export default function ViewCart() {
 
     return (
         <ScrollView
-            className={`flex-1 h-full bg-gray-100 p-${type === "screen" ? 4 : 2}`}
+            className={(Platform.OS === 'ios') ? `flex-1 h-full bg-gray-100 p-${type === "screen" ? 10 : 6}`: `flex-1 h-full bg-gray-100 p-${type === "screen" ? 4 : 2}`}
             showsVerticalScrollIndicator={false}>
             {type === "screen" && (
                 <View className="flex-row items-center mb-4 justify-between">

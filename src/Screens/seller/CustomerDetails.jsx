@@ -125,7 +125,7 @@ const CustomerDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: (Platform.OS === 'ios') ? 30 : 10,
+    padding: (Platform.OS === 'ios') ? 32 : 10,
     backgroundColor: '#F5F5F5', // Light background color for contrast
   },
   header: {
