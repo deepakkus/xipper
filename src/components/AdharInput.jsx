@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   textInput: {
+    flex:1,
     width: 18,
     height: 40,
     borderBottomWidth: 1,

@@ -11,6 +11,7 @@ import React, {useEffect, useState} from 'react';
 import {
   BackArrowIcon,
   DropDownArrow,
+  CrossIcon,
   LocationIcon,
 } from '../assets/images/Icons/ArrowIcon';
 import {Calender, Door, Guest} from '../assets/images/Icons/TravalIons';
@@ -36,6 +37,7 @@ import {
   VerifyGuestXipperID,
 } from '../services/hotelService';
 import {useSelector} from 'react-redux';
+import moment from 'moment';
 
 const formatDate = date => {
   const year = date.getFullYear();
@@ -78,6 +80,8 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
     existingPendingRequests: [],
     submittedRequests: [],
   });
+
+  var toDay = new Date();
 
   const getCheckInStatus = async () => {
     try {
@@ -469,7 +473,7 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
         toggleModal();
         break;
     }
-  };
+  };  
   return (
     <>
       {step < 5 && (
@@ -505,8 +509,7 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
           {Platform.OS === 'ios' ? (
             <>
               <View className="w-full flex gap-2 flex-row justify-between mt-4">
-                <View
-                  className='w-full flex-column overflow-visible items-center p-1 border border-gray-200 rounded-md'>
+                <View className="w-full flex-column overflow-visible items-center p-1 border border-gray-200 rounded-md">
                   <Calender color={'#000000'} />
                   <TextInput
                     value={
@@ -521,42 +524,58 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
                     color="#000000"
                   />
                   {showDatePicker === 'checkIn' && (
-                    <DateTimePicker
-                      value={
-                        formData.checkIn
-                          ? new Date(formData.checkIn)
-                          : new Date()
-                      }
-                      mode="date"
-                      minimumDate={new Date()}
-                      display={Platform.OS === 'ios' ? 'inline' : ''}
-                      onChange={(e, date) =>
-                        handleDateChange(e, date, 'checkIn')
-                      }
-                      accentColor={
-                        Platform.OS === 'ios'
-                          ? selectedProfile.type === 'user'
-                            ? '#06A77D'
-                            : '#0000FF'
-                          : ''
-                      }
-                      style={
-                        Platform.OS === 'ios'
-                          ? {width: '100%', backgroundColor: '#FAF9F6'}
-                          : ''
-                      }
-                    />
+                    <>
+                      <DateTimePicker
+                        testID="dateTimePicker1"
+                        value={
+                          formData.checkIn
+                            ? new Date(formData.checkIn)
+                            : new Date()
+                        }
+                        mode="date"
+                        minimumDate={new Date()}
+                        display={Platform.OS === 'ios' ? 'inline' : ''}
+                        enabled={false}
+                        onChange={(e, date) =>
+                          handleDateChange(e, date, 'checkIn')
+                        }
+                        accentColor={
+                          Platform.OS === 'ios'
+                            ? selectedProfile.type === 'user'
+                              ? '#06A77D'
+                              : '#0000FF'
+                            : ''
+                        }
+                        style={
+                          Platform.OS === 'ios'
+                            ? {width: '100%', backgroundColor: '#FAF9F6'}
+                            : ''
+                        }
+                      />
+                      <Pressable
+                        onPress={() => setShowDatePicker('')}
+                        style={styles.crossIcon}>
+                        <CrossIcon />
+                      </Pressable>
+                    </>
                   )}
                 </View>
               </View>
               <View className="w-full flex gap-2 flex-row justify-between mt-4">
-                <View
-                  className= 'w-full flex-column overflow-visible items-center p-1 border border-gray-200 rounded-md'>
+                <View className="w-full flex-column overflow-visible items-center p-1 border border-gray-200 rounded-md">
                   <Calender color={'#000000'} />
-                  <TextInput
+                  <TextInput              
                     value={
                       formData.checkOut
                         ? formatDate(new Date(formData.checkOut))
+                        : formData.checkIn
+                        ? formatDate(
+                            new Date(
+                              moment(new Date(formData.checkIn))
+                                .add(1, 'day')
+                                .format('YYYY-MM-DD'),
+                            ),
+                          )
                         : ''
                     }
                     placeholder="Check out date"
@@ -566,34 +585,56 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
                     color="#000000"
                   />
                   {showDatePicker === 'checkOut' && (
-                    <DateTimePicker
-                      value={
-                        formData.checkOut
-                          ? new Date(formData.checkOut)
-                          : new Date()
-                      }
-                      mode="date"
-                      minimumDate={new Date(formData.checkIn)}
-                      display={Platform.OS === 'ios' ? 'inline' : ''}
-                      onChange={(e, date) =>
-                        handleDateChange(e, date, 'checkOut')
-                      }
-                      accentColor={
-                        Platform.OS === 'ios'
-                          ? selectedProfile.type === 'user'
-                            ? '#06A77D'
-                            : '#0000FF'
-                          : ''
-                      }
-                      style={
-                        Platform.OS === 'ios'
-                          ? {
-                              width: '100%',
-                              backgroundColor: '#FAF9F6'
-                            }
-                          : ''
-                      }
-                    />
+                    <>
+                      <DateTimePicker
+                        testID="dateTimePicker2"
+                        value={
+                          formData.checkOut
+                            ? new Date(formData.checkOut)
+                            : formData.checkIn
+                            ? new Date(
+                                moment(new Date(formData.checkIn))
+                                  .add(1, 'day')
+                                  .format('YYYY-MM-DD'),
+                              )
+                            : new Date()
+                        }
+                        mode="date"
+                        minimumDate={
+                          formData.checkIn
+                            ? new Date(
+                                moment(new Date(formData.checkIn))
+                                  .add(1, 'day')
+                                  .format('YYYY-MM-DD'),
+                              )
+                            : new Date()
+                        }
+                        display={Platform.OS === 'ios' ? 'inline' : ''}
+                        onChange={(e, date) =>
+                          handleDateChange(e, date, 'checkOut')
+                        }
+                        accentColor={
+                          Platform.OS === 'ios'
+                            ? selectedProfile.type === 'user'
+                              ? '#06A77D'
+                              : '#0000FF'
+                            : ''
+                        }
+                        style={
+                          Platform.OS === 'ios'
+                            ? {
+                                width: '100%',
+                                backgroundColor: '#FAF9F6',
+                              }
+                            : ''
+                        }
+                      />
+                      <Pressable
+                        onPress={() => setShowDatePicker('')}
+                        style={styles.crossIcon}>
+                        <CrossIcon />
+                      </Pressable>
+                    </>
                   )}
                 </View>
               </View>
@@ -1022,7 +1063,13 @@ const styles = StyleSheet.create({
   pickerItem: {
     flex: 1,
     padding: 0,
-    color: '#06A77D'
+    color: '#06A77D',
+  },
+  crossIcon: {
+    position: 'absolute',
+    bottom: 10,
+    right: 5,
+    zIndex: 1,
   },
 });
 
