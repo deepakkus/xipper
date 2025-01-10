@@ -21,7 +21,7 @@ const SearchBar = ({
   };
 
   const handleBlur = () => {
-    setIsFocused(false);
+    setIsFocused(true);
   };
 
   const handleSearch = () => {
@@ -58,7 +58,7 @@ const SearchBar = ({
       </View>
 
       {isFocused && searchText.length > 0 && (
-        <ScrollView style={styles.suggestionsContainer}>
+        <ScrollView style={styles.suggestionsContainer} keyboardShouldPersistTaps='handled'>
           {loading ? (
             <View style={styles.suggestionItem}>
               <Text style={styles.suggestionsText}>Loading...</Text>
