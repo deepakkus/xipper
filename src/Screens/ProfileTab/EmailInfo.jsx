@@ -1,19 +1,21 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView, Pressable, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileHeader from "../../components/ProfileHeader";
 import { EmailIcon } from "../../assets/images/Icons/PersonalInfo";
 import AddButton from "../../components/AddButton";
 import AddModal from "../../modals/AddModal";
-import { ThreeDotIcon } from "../../assets/images/Icons/ArrowIcon";
+import { ThreeDotIcon, BackArrowIcon } from "../../assets/images/Icons/ArrowIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { AddEmail, DeleteEmail, GetEmails } from "../../services/profileService";
 import { setPersonalInfo } from "../../redux/accountRedux";
 import CircularLoader from "../../components/CircularLoader";
 import DeleteModal from "../../modals/DeleteModal";
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const EmailInfo = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { personalInfo } = useSelector((state) => state.account);
   const [data, setData] = useState(personalInfo?.emails || []);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -104,6 +106,14 @@ const EmailInfo = () => {
     <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2 ">
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader />
+        <>
+                <Pressable
+                  onPress={() => navigation.navigate('PersonalInfo')}
+                  style={styles.backButton}>
+                  <BackArrowIcon />
+                  <Text style={styles.headerText}>Back</Text>
+                </Pressable>
+              </>
         <Text className="font-psemibold text-lg text-black ">Email</Text>
         {data.length > 0
           ? data.map((item, index) => (
@@ -122,9 +132,9 @@ const EmailInfo = () => {
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View style={{ paddingHorizontal: 5 }}>
-                    <EmailIcon />
+                    <EmailIcon color={'#06A77D'}/>
                   </View>
-                  <Text className="font-semibold text-md ml-2 text-black">
+                  <Text className="font-semibold text-md ml-2 text-user">
                     {item.email}
                   </Text>
                 </View>
@@ -191,5 +201,17 @@ const EmailInfo = () => {
     </SafeAreaView>
   );
 };
+const styles = StyleSheet.create({
+  headerText: {
+    fontSize: 18,
+    color: '#333',
+    marginLeft: 10,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+});
 
 export default EmailInfo;

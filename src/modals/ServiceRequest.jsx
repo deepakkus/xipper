@@ -21,8 +21,8 @@ const ServiceRequest = ({ visible, onClose }) => {
     setLoading(true); 
     try {
       const res = await GetAddServiceRequestDetails();
-      console.log(res.data.results);
-      setData({...data, services: res.data.results.map((i)=>i.name)})
+      console.log(res.data.data.results);
+      setData({...data, services: res.data.data.results.map((i)=>i.name)})
     } catch (e) {
       console.error('Error fetching service details:', e);
     } finally {

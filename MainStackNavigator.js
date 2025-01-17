@@ -45,6 +45,7 @@ import Transactiondetails from './src/Screens/Analytics/TransactionDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CircularLoader from './src/components/CircularLoader';
 import BillSeller from './src/Screens/seller/BillSeller';
+import SellerDashboard from './src/Screens/seller/SellerDashboard';
 import Orders from './src/Screens/seller/Order';
 import SpaCart from './src/components/SpaCart';
 import DeleteAccount from './src/components/DeleteAccount';
@@ -125,6 +126,7 @@ const MainStackNavigator = () => {
       <Stack.Screen name="MiniBar" component={MiniBar} />
       <Stack.Screen name="Transactiondetails" component={Transactiondetails} />
       <Stack.Screen name="BillSeller" component={BillSeller} />
+      {/* <Stack.Screen name="SellerDashboard" component={SellerDashboard} /> */}
       <Stack.Screen name="Orders" component={Orders} />
       <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
     </Stack.Navigator>

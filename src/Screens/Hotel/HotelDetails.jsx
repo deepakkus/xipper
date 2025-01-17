@@ -451,7 +451,10 @@ import {
     FlatList,
     Pressable,
     Modal,
-    Platform
+    Platform,
+    StyleSheet,
+    Dimensions,
+    TouchableOpacity
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { BackArrowIcon } from "../../assets/images/Icons/ArrowIcon";
@@ -477,6 +480,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedProperty } from "../../redux/accountRedux";
 import AmenitiesScreen from "../../components/AmenitiesScreen";
 import  { getTextClassInstance } from '../../utils/TextClass';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import Geocoder from 'react-native-geocoding';
+
+Geocoder.init('AIzaSyBzOzDZtVfDlIQ6f5avmkDc9ZItIy6gtNU');
 
 const TopCategyData = [
     {
@@ -542,15 +549,28 @@ const HotelDetails = () => {
     const [selectedRoomType, setSelectedRoomType] = useState('Standard Rooms');
     const [isAmenitiesModalVisible, setIsAmenitiesModalVisible] = useState(false);
 
+     const [mapError, setMapError] = useState(null);
+      const [mapRegion, setMapRegion] = useState({
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+
     const toggleModal = () => setModalVisible(!isModalVisible);
     const toggleCheckInModal = () => setCheckInModalVisible(!isCheckInModalVisible);
     const toggleServiceModal = () => setServiceModalVisible(!serviceModalVisible);
+    const [isModalDirections, setModalDirections] = useState(false);
+
+    const toggleModalDirection = () => {
+      isModalDirections(!isModalDirections);
+    };
 
     const fetchHotelDetails = async () => {
         try {
             setLoading(true);
             const res = await GetUserHotelDetails(selectedProperty?.XipperID);
-            setHotelDetails(res.result);
+            setHotelDetails(res.data.result);
         } catch (e) {
             console.log(e);
         } finally {
@@ -586,6 +606,62 @@ const HotelDetails = () => {
 
     const profileClass = selectedProfile.type === 'user' ? 'bg-user' : 'bg-company';
 
+    const MapScreen = () => (
+        <View style={styles.mapContainer}>
+         
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            region={mapRegion}
+            showsUserLocation={true}
+            loadingEnabled={true}
+            onError={error => {
+              console.error('Map Error:', error);
+              setMapError(error);
+            }}>
+            <Marker
+              coordinate={{
+                latitude: mapRegion.latitude,
+                longitude: mapRegion.longitude,
+              }}
+              title="Selected Location"
+              description={filteredAddress}
+            />
+          </MapView>
+    
+          <TouchableOpacity style={styles.backButton} onPress={toggleModal}>
+            <BackArrowIcon />
+          </TouchableOpacity>
+    
+          {mapError && (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>
+                Error loading map. Please check your connection and try again.
+              </Text>
+            </View>
+          )}
+        </View>
+      );
+  const getDirection = async (filteredAddress) => {
+    setModalDirections(true);
+    try {
+      const response = await Geocoder.from(filteredAddress);
+      const location = response.results[0].geometry.location;
+      setMapRegion({
+        ...mapRegion,
+        latitude: location.lat,
+        longitude: location.lng,
+      });
+      
+      console.log('Geocoding value:', location);
+    } catch (error) {
+      console.error('Geocoding error:', error);
+      Alert.alert(
+        'Error',
+        'Could not find the location. Please check your internet connection and try again.',
+      );
+    }
+  };
     return (
         <SafeAreaProvider>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -622,7 +698,7 @@ const HotelDetails = () => {
                     style={{ width: '100%', height: 450, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}
                     resizeMode="cover"
                 />
-                <View className= {Platform.OS === 'ios' ? "absolute w-full p-10" : "absolute w-full p-6"}>
+                <View className= {Platform.OS === 'ios' ? "absolute w-full p-12" : "absolute w-full p-6"}>
                     <View className="flex-row justify-between items-center">
                         <Pressable onPress={() => nav.pop()}>
                             <BackArrowIcon color="#fff" />
@@ -666,7 +742,7 @@ const HotelDetails = () => {
                         <Text className="font-pmedium ml-2 text-black text-[14px]">
                             (100 Reviews)
                         </Text>
-                        <Pressable className="ml-16 rounded-full bg-user px-4 py-1">
+                        <Pressable className="ml-16 rounded-full bg-user px-4 py-1" onPress={() => getDirection(filteredAddress)}>
                             <Text className={`text-[14px] font-pmedium text-white ${selectedProfile.type === 'user' ? 'bg-user' : 'bg-company'}`}>{textClass.getTextString('TXT17')}</Text>
                         </Pressable>
 
@@ -735,11 +811,150 @@ const HotelDetails = () => {
                         horizontal
                     />
                 </View>
+                { isModalDirections ? (
+        <MapScreen />
+      ) : '' }
             </ScrollView>
+          
             {loading && <CircularLoader />}
+           
         </SafeAreaProvider >
     );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    //paddingHorizontal: 20,
+    backgroundColor: '#F8F9FA',
+  },
+  title: {
+    fontWeight: '600',
+    fontSize: 18,
+    color: 'black',
+    //marginVertical: 10,
+  },
+  scrollView: {
+    padding: 20,
+    marginBottom: 10,
+  },
+  addressCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  addressInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  addressText: {
+    marginLeft: 10,
+  },
+  addressName: {
+    fontWeight: '600',
+    fontSize: 16,
+    marginBottom: 4,
+    color: 'black',
+  },
+  mapContainer: {
+    flex: 1,
+    position: 'relative',
+  },
+  searchContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    right: 20,
+    zIndex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginRight: 10,
+    color: '#000',
+  },
+  searchButton: {
+    backgroundColor: '#6D38C3',
+    padding: 10,
+    borderRadius: 8,
+    minWidth: 70,
+    alignItems: 'center',
+  },
+  searchButtonText: {
+    color: 'white',
+    fontWeight: '600',
+  },
+  map: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 80,
+    left: 20,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  noAddressText: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#666',
+  },
+  errorContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    backgroundColor: 'rgba(255, 0, 0, 0.8)',
+    padding: 10,
+    borderRadius: 8,
+  },
+  errorText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  backBtn:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 20,
+  }
+});
 export default HotelDetails;
 

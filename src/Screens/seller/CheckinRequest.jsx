@@ -67,7 +67,7 @@ const CheckinRequest = ({ onBackPress }) => {
   }, [guestData]);
 
   return (
-    <SafeAreaProvider className="h-full">
+    <SafeAreaProvider className={Platform.OS === 'ios' ? "pt-12 h-full" : "h-full"}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         <View style={styles.header}>
           <Pressable onPress={() => nav.goBack()} style={styles.backButton}>

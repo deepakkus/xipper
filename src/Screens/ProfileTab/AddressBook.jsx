@@ -70,12 +70,10 @@
 // //   );
 // // };
 
-
 // import { StyleSheet, PermissionsAndroid, Platform } from 'react-native';
 // // import MapView, { Marker } from 'react-native-maps';
 // // import Geolocation from 'react-native-geolocation-service';
 // import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
 
 // // const Maps = () => {
 // //   const [region, setRegion] = useState({
@@ -177,7 +175,6 @@
 // //     flex: 1,
 // //   },
 // // });
-
 
 // // import React, { useEffect, useState } from 'react';
 // // import { View, StyleSheet, Button, PermissionsAndroid, Platform } from 'react-native';
@@ -287,7 +284,6 @@
 //     flex: 1,
 //   },
 // });
-
 
 // const AddressBook = () => {
 //   const dispatch = useDispatch();
@@ -427,8 +423,6 @@
 //   );
 // };
 
-
-
 // import React, { useEffect, useState } from "react";
 // import { View, Text, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
 // import { useDispatch, useSelector } from "react-redux";
@@ -522,7 +516,7 @@
 
 // export default AddressBook;
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -533,22 +527,25 @@ import {
   Alert,
   StyleSheet,
   Dimensions,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import ProfileHeader from "../../components/ProfileHeader";
-import AddButton from "../../components/AddButton";
-import { PhoneIcon, LocationIcon } from "../../assets/images/Icons/PersonalInfo";
-import { ThreeDotIcon, BackArrowIcon } from "../../assets/images/Icons/ArrowIcon";
-import { GetAddresses } from "../../services/profileService";
-import { setPersonalInfo } from "../../redux/accountRedux";
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+  Pressable
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import ProfileHeader from '../../components/ProfileHeader';
+import AddButton from '../../components/AddButton';
+import {PhoneIcon, LocationIcon} from '../../assets/images/Icons/PersonalInfo';
+import {ThreeDotIcon, BackArrowIcon} from '../../assets/images/Icons/ArrowIcon';
+import {GetAddresses} from '../../services/profileService';
+import {setPersonalInfo} from '../../redux/accountRedux';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-Geocoder.init("AIzaSyBzOzDZtVfDlIQ6f5avmkDc9ZItIy6gtNU");
+Geocoder.init('AIzaSyBzOzDZtVfDlIQ6f5avmkDc9ZItIy6gtNU');
 
 const AddressBook = () => {
   const dispatch = useDispatch();
-  const { personalInfo } = useSelector((state) => state.account);
+  const navigation = useNavigation();
+  const {personalInfo} = useSelector(state => state.account);
   const [data, setData] = useState(personalInfo?.addresses || []);
   const [isModalVisible, setModalVisible] = useState(false);
   const [searchAddress, setSearchAddress] = useState('');
@@ -568,7 +565,7 @@ const AddressBook = () => {
   const fetchAddresses = async () => {
     try {
       const res = await GetAddresses();
-      dispatch(setPersonalInfo({ key: "addresses", value: res }));
+      dispatch(setPersonalInfo({key: 'addresses', value: res}));
       setData(res);
     } catch (e) {
       console.log(e);
@@ -591,16 +588,16 @@ const AddressBook = () => {
         longitude: location.lng,
       });
     } catch (error) {
-      console.error("Geocoding error:", error);
+      console.error('Geocoding error:', error);
       Alert.alert(
         'Error',
-        'Could not find the location. Please check your internet connection and try again.'
+        'Could not find the location. Please check your internet connection and try again.',
       );
     }
   };
 
   useEffect(() => {
-    if (!personalInfo["addresses"]) {
+    if (!personalInfo['addresses']) {
       fetchAddresses();
     }
   }, [personalInfo]);
@@ -615,10 +612,7 @@ const AddressBook = () => {
           onChangeText={setSearchAddress}
           placeholderTextColor="#666"
         />
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={handleSearch}
-        >
+        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
@@ -629,11 +623,10 @@ const AddressBook = () => {
         region={mapRegion}
         showsUserLocation={true}
         loadingEnabled={true}
-        onError={(error) => {
-          console.error("Map Error:", error);
+        onError={error => {
+          console.error('Map Error:', error);
           setMapError(error);
-        }}
-      >
+        }}>
         <Marker
           coordinate={{
             latitude: mapRegion.latitude,
@@ -644,10 +637,7 @@ const AddressBook = () => {
         />
       </MapView>
 
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={toggleModal}
-      >
+      <TouchableOpacity style={styles.backButton} onPress={toggleModal}>
         <BackArrowIcon />
       </TouchableOpacity>
 
@@ -668,13 +658,25 @@ const AddressBook = () => {
       ) : (
         <>
           <ProfileHeader />
-          <Text style={styles.title}>Address Book</Text>
-          <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+          <View className="p-4">
+            <Pressable
+              onPress={() => navigation.navigate('PersonalInfo')}
+              style={styles.backBtn}>
+                <BackArrowIcon />
+                <Text style={styles.headerText}>Back</Text>
+            </Pressable>
+          </View>
+          <View className="p-6">
+            <Text style={styles.title}>Address Book</Text>
+          </View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollView}>
             {data.length > 0 ? (
               data.map((item, index) => (
                 <View key={index} style={styles.addressCard}>
                   <View style={styles.addressInfo}>
-                    <LocationIcon fill={"#6D38C3"} />
+                    <LocationIcon fill={'#6D38C3'} />
                     <View style={styles.addressText}>
                       <Text style={styles.addressName}>{item.name}</Text>
                       <Text className="text-black">{`${item.house}, ${item.landmark}`}</Text>
@@ -686,18 +688,19 @@ const AddressBook = () => {
                       <ThreeDotIcon />
                     </TouchableOpacity>
                   )}
-
                 </View>
               ))
             ) : (
               <Text style={styles.noAddressText}>No addresses found.</Text>
             )}
           </ScrollView>
-          <AddButton
-            title={"Add New Address"}
-            Icon={<LocationIcon color={"gray"} />}
-            onPress={toggleModal}
-          />
+          <View className="p-4 bg-gray-100">
+            <AddButton
+              title={'Add New Address'}
+              Icon={<LocationIcon color={'gray'} />}
+              onPress={toggleModal}
+            />
+          </View>
         </>
       )}
     </SafeAreaView>
@@ -707,27 +710,28 @@ const AddressBook = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    //paddingHorizontal: 20,
     backgroundColor: '#F8F9FA',
   },
   title: {
     fontWeight: '600',
     fontSize: 18,
     color: 'black',
-    marginVertical: 10,
+    //marginVertical: 10,
   },
   scrollView: {
+    padding: 20,
     marginBottom: 10,
   },
   addressCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 10,
-    backgroundColor: "#FFFFFF",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    backgroundColor: '#FFFFFF',
     padding: 15,
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -737,8 +741,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   addressInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   addressText: {
     marginLeft: 10,
@@ -764,7 +768,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 8,
     padding: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -832,6 +836,11 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
+  backBtn:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 20,
+  }
 });
 
 export default AddressBook;

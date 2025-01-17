@@ -15,6 +15,7 @@ const CompanyList = () => {
   const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
   const [loading, setLoading] = useState(false);
   const { pendingRegistrations } = useSelector((state) => state.company)
+  console.log('kkkkk'+ JSON.stringify(pendingRegistrations))
 
   const toggleMenu = (index) => {
     setVisibleMenuIndex(visibleMenuIndex === index ? null : index);
@@ -24,9 +25,9 @@ const CompanyList = () => {
     try {
       setLoading(true);
       const res = await GetPendingRegistrationList();
-      dispatch(setPendingRegistrationList(res.data.pendingRegistrations))
-      console.log(res.data.pendingRegistrations)
-      res.data.pendingRegistrations.length === 0 && nav.navigate("Account/CompanyOnboading");
+      dispatch(setPendingRegistrationList(res.data.data.pendingRegistrations))
+      console.log('res.data.data.pendingRegistrations==='+ JSON.stringify(res.data.data.pendingRegistrations))
+      res.data.data.pendingRegistrations.length === 0 && nav.navigate("Account/CompanyOnboading");
     } catch (e) {
       console.log(e);
     } finally {

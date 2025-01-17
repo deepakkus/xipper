@@ -87,7 +87,7 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
     try {
       setLoading(true);
       const res = await CheckExistingCheckInRequest(hotelData.XipperID);
-      setCheckInData(res);
+      setCheckInData(res.data);
       if (
         res.existingPendingRequests.length > 0 ||
         res.submittedRequests.length > 0

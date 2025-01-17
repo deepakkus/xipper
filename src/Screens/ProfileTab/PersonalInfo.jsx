@@ -9,7 +9,7 @@ import {
     EmailIcon,
     FamilyIcon,
     LocationIcon,
-    PhoneIcon,
+    PhoneIcon
 } from "../../assets/images/Icons/PersonalInfo";
 import { useDispatch, useSelector } from "react-redux";
 import { GetProfileData } from "../../services/profileService";
@@ -66,7 +66,7 @@ const PersonalInfo = () => {
         },
         {
             title: profileData.dob || "DD MM YYYY",
-            navigateTo: "BirthDate",
+            //navigateTo: "BirthDate",
             IconComponent: BirthdayIcon,
         },
         {
@@ -79,6 +79,7 @@ const PersonalInfo = () => {
         <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2">
             <ScrollView showsVerticalScrollIndicator={false}>
                 <ProfileHeader />
+                
                 {selectedProfile.type === 'user' ? (
                     <Text className="font-poppins font-bold text-[24px] text-md text-black mb-4">
                         {textClass.getTextString('TXT28')}

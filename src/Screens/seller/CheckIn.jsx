@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    padding: 20,
+     paddingHorizontal: 2,
+     padding: 2,
   },
   card: {
     flexDirection: 'row',

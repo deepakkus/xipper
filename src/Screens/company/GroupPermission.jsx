@@ -15,7 +15,7 @@ const GroupPage = () => {
     return (
         <View className="flex-1 bg-gray-100">
             <View className="shadow-md py-4 px-6">
-                <View className="flex flex-row items-center">
+                <View className={Platform.OS === 'ios' ? "flex flex-row items-center p-6" : "flex flex-row items-center"}>
                     <Pressable onPress={onClick}>
                         <BackArrowIcon width={24} height={24} fill="black" />
                     </Pressable>

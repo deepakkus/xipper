@@ -192,8 +192,8 @@ export const GetFamily = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response.data.success) {
-      const familyData = response.data.data.map(item => ({
+    if (response.data.status === 'Success') {
+      const familyData = response.data.data.family.map(item => ({
         fullName: item.familyMember.fullName,
         xipperID: item.familyMember.XipperID,
         relationship: item.relationship,

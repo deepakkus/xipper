@@ -39,12 +39,13 @@ const FoodCard = () => {
             setLoading(true);
             const res = await GetFandBItems(selectedProperty.XipperID, "Restaurant Menu");
             const cart = fAndBCartId ? await getCart() : null;
-            const subCategories = res?.subCategories || [];
+            const subCategories = res.data?.subCategories || [];
 
             const { uniqueCategories, uniqueItemTypes } = extractUniqueCategoryAndItemTypes(subCategories);
             setUniqueDataSet({ uniqueCategories, uniqueItemTypes });
 
             const cartItems = cart?.cartResponse || [];
+            
             const updatedItems = subCategories.map(item => {
                 const cartItem = cartItems.find(cartItem => cartItem.itemName === item.name);
                 return cartItem ? { ...item, quantity: cartItem.quantity } : { ...item, quantity: 0 };
@@ -61,8 +62,8 @@ const FoodCard = () => {
         try {
             setLoading(true);
             const res = await GetFandBCart(fAndBCartId);
-            dispatch(setRestaurantCart(res.data.cartResponse));
-            return res.data;
+            dispatch(setRestaurantCart(res.data.data.cartResponse));
+            return res.data.data;
         } catch (e) {
             console.error("Error fetching cart:", e);
         } finally {
@@ -196,7 +197,8 @@ const FoodCard = () => {
                         <SearchBar
                             placeholder="Search food items..."
                             value={searchText}
-                            onChangeText={setSearchText}
+                            searchText={searchText}
+                            setSearchText={setSearchText}
                         />
                     </View>
 

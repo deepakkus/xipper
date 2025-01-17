@@ -59,8 +59,9 @@ const VerifyAadhar = ({ navigation }) => {
         //   aadhaarNumber: aadhaarNumber.trim(),
         // });
 
-        console.log('----OTPForaadhaar---', res);
-        if (res.data.status === 'SUCCESS') {
+        console.log('----OTPForaadhaar---', JSON.stringify(res));
+        //if (res.data.status === 'SUCCESS') {
+        if (res.status === 'SUCCESS') {
           setIsOtpSent(true);
           nav.navigate('VerifyAdharOtp', {
             phoneNumber,
@@ -90,6 +91,7 @@ const VerifyAadhar = ({ navigation }) => {
         //   },
         // );
         const res = await addPassport(passportData, phoneNumber);
+        console.log('res=='+ JSON.stringify(res))
       }
     } catch (err) {
       if (err.response) {

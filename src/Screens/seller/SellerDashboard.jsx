@@ -40,8 +40,8 @@ const SellerDashboard = () => {
         try {
             setLoading(true);
             const res = await GetHotelCheckInList(selectedProfile.XipperID);
-            console.log(res);
-            dispatch(setHotelCheckInList(res.checkins));
+            console.log(res.data);
+            dispatch(setHotelCheckInList(res.data.checkins));
         } catch (e) {
             console.log(e);
         } finally {
@@ -54,7 +54,8 @@ const SellerDashboard = () => {
         try {
             setLoading(true);
             const res = await GethotelServiceRequest(selectedProfile.XipperID);
-            dispatch(sethotelServiceRequest(res.data.serviceRequests));
+            console.log(res)
+            dispatch(sethotelServiceRequest(res.data.data.serviceRequests));
         } catch (e) {
             console.log(e)
         } finally {
@@ -97,7 +98,9 @@ const SellerDashboard = () => {
                         <Card key={index} title={card.title} amount={card.amount} />
                     ))}
                 </View>
-                <ButtonGroup buttons={buttons} activeTab={activeTab} />
+                <View style={{padding: 10}}>
+                    <ButtonGroup buttons={buttons} activeTab={activeTab} />
+                </View>
             </>
         );
 
@@ -201,7 +204,7 @@ const SellerDashboard = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 13 ,
+        padding: Platform.OS === 'ios' ? 10 : 13,
         backgroundColor: '#f5f5f5',
         marginTop: 20,
     },
@@ -238,8 +241,8 @@ const styles = StyleSheet.create({
     },
     dashboard: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
+        justifyContent: 'space-evenly',
+        marginVertical: 10,
     },
     alert: {
         flexDirection: 'row',

@@ -112,6 +112,7 @@ const MenuModal = ({ visible, onClose, onSelectOption }) => {
   const [showSystemSettings, setShowSystemSettings] = useState(false);
 
   const handleSelect = (route, enableMenu, data) => {
+   
     if (route === "profiles") {
       setShowProfiles(!showProfiles);
       setShowSystemSettings(false);
@@ -431,6 +432,7 @@ const TabsLayouts = () => {
         }}
       >
         {tabScreens.map((screen) => (
+          
           <Tab.Screen
             key={screen.name}
             name={screen.name}
@@ -442,7 +444,6 @@ const TabsLayouts = () => {
                   <Pressable
                     {...props}
                     onPress={() => {
-
                       if (screen.isMenu) { toggleMenuModal(); }
                       else {
                         handleTabPress(screen.name);

@@ -134,7 +134,7 @@ const CompanyManagement = () => {
   const fetchEmployeeAccess = async () => {
     try {
       const response = await GetEmployeeAccess();
-      return response.data.accessList;
+      return response.data.data.accessList;
     } catch (error) {
       console.error("Error fetching employee access:", error);
       return [];
@@ -156,7 +156,7 @@ const CompanyManagement = () => {
       try {
         setLoading(true);
         const response = await GetCompanyDashboard();
-        setData(response.data?.["employees"]);
+        setData(response.data.data?.["employees"]);
       } catch (err) {
         console.log(err);
         setError(err);
@@ -508,7 +508,7 @@ const CompanyManagement = () => {
           <View style={styles.modalContainer}>
             <View style={styles.blackOverlay} />
             <View className="flex-1 justify-center items-center px-5">
-              <View className="bg-white w-full p-5 rounded-2xl shadow-xl border border-gray-200">
+              <View className="bg-white w-full p-10 rounded-2xl shadow-xl border border-gray-200">
                 <View className="flex-row justify-between items-center mb-4">
                   {selectedProfile.type === "company" ? (
                     <Text className="font-medium text-black text-xl mb-3">

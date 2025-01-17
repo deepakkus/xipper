@@ -1,21 +1,28 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import ProfileHeader from "../../components/ProfileHeader";
-import AddButton from "../../components/AddButton";
-import { PhoneIcon } from "../../assets/images/Icons/PersonalInfo";
-import { ThreeDotIcon } from "../../assets/images/Icons/ArrowIcon";
-import AddModal from "../../modals/AddModal";
-import DeleteModal from "../../modals/DeleteModal";
-import { useDispatch, useSelector } from "react-redux";
-import { AddPhoneNumber, DeletePhoneNumber, GetPhoneNumbers } from "../../services/profileService";
-import { setPersonalInfo } from "../../redux/accountRedux";
-import CircularLoader from "../../components/CircularLoader";
-import { getTextClassInstance } from "../../utils/TextClass";
+import {View, Text, ScrollView, Pressable, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import ProfileHeader from '../../components/ProfileHeader';
+import AddButton from '../../components/AddButton';
+import {PhoneIcon} from '../../assets/images/Icons/PersonalInfo';
+import {ThreeDotIcon} from '../../assets/images/Icons/ArrowIcon';
+import AddModal from '../../modals/AddModal';
+import DeleteModal from '../../modals/DeleteModal';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  AddPhoneNumber,
+  DeletePhoneNumber,
+  GetPhoneNumbers,
+} from '../../services/profileService';
+import {setPersonalInfo} from '../../redux/accountRedux';
+import CircularLoader from '../../components/CircularLoader';
+import {getTextClassInstance} from '../../utils/TextClass';
+import {BackArrowIcon, CopyIcon} from '../../assets/images/Icons/ArrowIcon';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const PhoneNumber = () => {
   const dispatch = useDispatch();
-  const { personalInfo } = useSelector((state) => state.account);
+  const navigation = useNavigation();
+  const {personalInfo} = useSelector(state => state.account);
   const [data, setData] = useState(personalInfo?.phoneNumbers || []);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -30,7 +37,7 @@ const PhoneNumber = () => {
       setLoading(true);
       const res = await GetPhoneNumbers();
       console.log(res);
-      dispatch(setPersonalInfo({ key: "phoneNumbers", value: res }));
+      dispatch(setPersonalInfo({key: 'phoneNumbers', value: res}));
       setData(res);
     } catch (e) {
       console.log(e);
@@ -40,7 +47,7 @@ const PhoneNumber = () => {
   };
 
   useEffect(() => {
-    if (!personalInfo["phoneNumbers"]) {
+    if (!personalInfo['phoneNumbers']) {
       fetchPhoneNumbers();
     }
   }, [personalInfo]);
@@ -49,12 +56,12 @@ const PhoneNumber = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const toggleDeleteModal = (item) => {
+  const toggleDeleteModal = item => {
     setSelectedItem(item);
     setDeleteModalVisible(!isDeleteModalVisible);
   };
 
-  const toggleOptionsMenu = (item) => {
+  const toggleOptionsMenu = item => {
     setSelectedItem(item);
     setOptionsMenuVisible(optionsMenuVisible === item?.id ? null : item?.id);
   };
@@ -62,11 +69,11 @@ const PhoneNumber = () => {
   const addNumber = async (newNumber, token) => {
     try {
       setLoading(true);
-      const res = await AddPhoneNumber(newNumber, "+91", token);
+      const res = await AddPhoneNumber(newNumber, '+91', token);
       if (res.status === 200) {
-        const newData = [...data, { id: data.length + 1, number: newNumber }];
+        const newData = [...data, {id: data.length + 1, number: newNumber}];
         setData(newData);
-        dispatch(setPersonalInfo({ key: "phoneNumbers", value: newData }));
+        dispatch(setPersonalInfo({key: 'phoneNumbers', value: newData}));
         toggleModal();
       }
     } catch (e) {
@@ -82,9 +89,11 @@ const PhoneNumber = () => {
       toggleDeleteModal(null);
       const res = await DeletePhoneNumber(selectedItem.number);
       if (res.status === 200) {
-        const newData = data.filter((item) => item.number !== selectedItem.number);
+        const newData = data.filter(
+          item => item.number !== selectedItem.number,
+        );
         setData(newData);
-        dispatch(setPersonalInfo({ key: "phoneNumbers", value: newData })); // Update Redux
+        dispatch(setPersonalInfo({key: 'phoneNumbers', value: newData})); // Update Redux
       }
     } catch (e) {
       console.log(e);
@@ -93,33 +102,44 @@ const PhoneNumber = () => {
     }
   };
 
-  const makePrimary = (item) => {
-    const updatedData = data.map((phone) =>
+  const makePrimary = item => {
+    const updatedData = data.map(phone =>
       phone.number === item.number
-        ? { ...phone, isPrimary: true }
-        : { ...phone, isPrimary: false }
+        ? {...phone, isPrimary: true}
+        : {...phone, isPrimary: false},
     );
     setData(updatedData);
-    dispatch(setPersonalInfo({ key: "phoneNumbers", value: updatedData })); // Update Redux
+    dispatch(setPersonalInfo({key: 'phoneNumbers', value: updatedData})); // Update Redux
     setOptionsMenuVisible(null);
   };
 
   return (
     <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2">
       <ProfileHeader />
-      <Text className="font-psemibold text-lg text-black">{textClass.getTextString('TXT1')}</Text>
+      <>
+        <Pressable
+          onPress={() => navigation.navigate('PersonalInfo')}
+          style={styles.backButton}>
+          <BackArrowIcon />
+          <Text style={styles.headerText}>Back</Text>
+        </Pressable>
+      </>
+      <Text className="font-psemibold text-lg text-black">
+        {textClass.getTextString('TXT1')}
+      </Text>
       <ScrollView showsVerticalScrollIndicator={false} className="mb-10">
         {data.length > 0
           ? data.map((item, i) => (
               <View
                 key={i}
-                className="flex-row items-center justify-between mt-2 bg-white p-2 rounded-lg relative"
-              >
+                className="flex-row items-center justify-between mt-2 bg-white p-2 rounded-lg relative">
                 <View className="flex-row items-center">
                   <View className="px-2">
                     <PhoneIcon />
                   </View>
-                  <Text className="font-pregular text-md text-black">{item.number}</Text>
+                  <Text className="font-pregular text-md text-black">
+                    {item.number}
+                  </Text>
                 </View>
                 {!item.isPrimary && (
                   <Pressable onPress={() => toggleOptionsMenu(item)}>
@@ -129,30 +149,31 @@ const PhoneNumber = () => {
                 {optionsMenuVisible === item.id && (
                   <View
                     style={{
-                      position: "absolute",
+                      position: 'absolute',
                       right: 10,
                       top: 40,
-                      backgroundColor: "white",
+                      backgroundColor: 'white',
                       padding: 8,
                       borderRadius: 8,
-                      shadowColor: "#000",
+                      shadowColor: '#000',
                       shadowOpacity: 0.2,
-                      shadowOffset: { width: 0, height: 2 },
+                      shadowOffset: {width: 0, height: 2},
                       shadowRadius: 4,
                       zIndex: 10,
-                    }}
-                  >
+                    }}>
                     <Pressable
                       onPress={() => makePrimary(item)}
-                      style={{ paddingVertical: 8 }}
-                    >
-                      <Text className="font-pregular text-md text-black">Make Primary</Text>
+                      style={{paddingVertical: 8}}>
+                      <Text className="font-pregular text-md text-black">
+                        Make Primary
+                      </Text>
                     </Pressable>
                     <Pressable
                       onPress={() => toggleDeleteModal(item)}
-                      style={{ paddingVertical: 8 }}
-                    >
-                      <Text className="font-pregular text-md text-red-500">Delete</Text>
+                      style={{paddingVertical: 8}}>
+                      <Text className="font-pregular text-md text-red-500">
+                        Delete
+                      </Text>
                     </Pressable>
                   </View>
                 )}
@@ -177,12 +198,23 @@ const PhoneNumber = () => {
       )}
       <AddButton
         title={textClass.getTextString('TXT3')}
-        Icon={<PhoneIcon color={"gray"} />}
+        Icon={<PhoneIcon color={'gray'} />}
         onPress={toggleModal}
       />
       {loading && <CircularLoader />}
     </SafeAreaView>
   );
 };
-
+const styles = StyleSheet.create({
+  headerText: {
+    fontSize: 18,
+    color: '#333',
+    marginLeft: 10,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+});
 export default PhoneNumber;

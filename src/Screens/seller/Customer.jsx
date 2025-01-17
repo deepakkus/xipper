@@ -44,7 +44,7 @@ const Customer = () => {
     try {
       setLoading(true);
       const res = await GetHotelCustomerDetails(selectedProfile.XipperID);
-      setCustomers(res);
+      setCustomers(res.data.data);
     } catch (e) {
       console.log(e);
     } finally {

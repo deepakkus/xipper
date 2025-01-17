@@ -43,8 +43,8 @@ export default function ViewCart() {
         try {
             setLoading(true);
             const res = await GetFandBCart(fAndBCartId);
-            dispatch(setRoomServiceCart(res.data));
-            setItems(res.data.cartResponse)
+            dispatch(setRoomServiceCart(res.data.data));
+            setItems(res.data.data.cartResponse)
         } catch (e) {
             console.log(e);
         } finally {

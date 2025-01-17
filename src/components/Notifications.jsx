@@ -54,7 +54,7 @@ const Notifications = () => {
         try {
             setLoading(true);
             const res = await GetNotificationList();
-            setNotification(res.data.notifications);
+            setNotification(res.data.data.notifications);
         } catch (e) {
             console.log(e);
         } finally {

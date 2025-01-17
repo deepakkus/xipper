@@ -40,7 +40,7 @@ const FoodItemCard = ({ item, setLoading }) => {
             tempArr.push({ ...item, quantity: 1 });
           }
 
-          dispatch(setFAndBCartId(res.data.cart.cartId))
+          dispatch(setFAndBCartId(res.data.data.cart.cartId))
           dispatch(setRestaurantCart(tempArr));
           setQuantity((prev) => prev + 1);
         }

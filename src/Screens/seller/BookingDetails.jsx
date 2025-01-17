@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   detailItem: {
+    width : Platform.OS === 'ios' ? '50%': '',
     alignItems: 'center',
   },
   dateBox: {

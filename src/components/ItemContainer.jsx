@@ -28,7 +28,8 @@ const ItemContainer = ({ title, onPress, showBorder, IconComponent }) => {
           {title}
         </Text>
       </View>
-      {title !== "DD MM YYYY" && title !== "India" ? (
+      {/* {title !== "DD MM YYYY" && title !== "India" ? ( */}
+        {isNaN(new Date(title)) !== false  && title !== "India" ? (     
         <GreaterArrowIcon />
       ) : null}
     </TouchableOpacity>

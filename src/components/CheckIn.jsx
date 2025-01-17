@@ -82,9 +82,11 @@ const CheckInContent = ({
         try {
             setLoading(true);
             const res = await GetAllServices(selectedProperty.checkInId);
+            
             setServicesData(res.data);
             const fAndB = res.data.services.filter((i) => i.name === "Food And Beverage")?.[0]?.cartId
             const laundry = res.data.services.filter((i) => i.name === "Housekeeping")?.[0]?.cartId
+
             if (fAndB) {
                 dispatch(setFAndBCartId(fAndB));
             }
@@ -125,17 +127,17 @@ const CheckInContent = ({
                     res = await GetServiceDetails(hotelData.XipperID, type);
                     break;
             }
-            console.log(type, res, ":******")
+            console.log(type, JSON.stringify(res.data), ":******")
             if (res) {
                 const temp = {
                     ...servicesData,
                     [type]: [
-                        ...(type === "Housekeeping" && res.Laundry?.length > 0 ? [{ name: "Laundry" }, ...res.subCategories ?? []] : []),
-                        ...(type === "Maintenance" ? res.data : []),
-                        ...(type === "Reception" ? res.data : []),
-                        ...(["Book Service", "Travel Desk", "Food And Beverage"].includes(type) ? [...(res.subCategories ?? [])] : []),
+                        ...(type === "Housekeeping" && res.data.Laundry?.length > 0 ? [{ name: "Laundry" }, ...res.data.subCategories ?? []] : []),
+                        ...(type === "Maintenance" ? res.data.data : []),
+                        ...(type === "Reception" ? res.data.data : []),
+                        ...(["Book Service", "Travel Desk", "Food And Beverage"].includes(type) ? [...(res.data.subCategories ?? [])] : []),
                     ],
-                    ...(type === "Housekeeping" && res.Laundry?.length > 0 && { "Laundry": res?.Laundry ?? [] }),
+                    ...(type === "Housekeeping" && res.data.Laundry?.length > 0 && { "Laundry": res.data?.Laundry ?? [] }),
                 };
 
                 dispatch(setUserServicesData(temp));

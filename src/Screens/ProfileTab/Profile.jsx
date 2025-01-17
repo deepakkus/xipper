@@ -46,7 +46,7 @@ const Profile = () => {
             </TouchableOpacity>
 
             {/* Financial Info */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate("FinancialInfo")}
               className="flex-row items-center justify-between bg-white py-6 px-3 rounded-lg mb-3 mx-3"
             >
@@ -55,7 +55,7 @@ const Profile = () => {
                 <Text className="font-poppins font-bold text-[16px] text-md text-black ml-3">{textClass.getTextString('TXT29')}</Text>
               </View>
               <GreaterArrowIcon />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* Government */}
             <TouchableOpacity
@@ -216,7 +216,7 @@ const Profile = () => {
             )}
 
             {/* Financial Info */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate("FinancialInfo")}
               className="flex-row items-center justify-between bg-white py-6 px-3 rounded-lg mb-3 mx-3"
             >
@@ -225,7 +225,7 @@ const Profile = () => {
                 <Text className="font-poppins font-bold text-[16px] text-md text-black ml-3">{textClass.getTextString('TXT29')}</Text>
               </View>
               <GreaterArrowIcon />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* Government */}
             <TouchableOpacity

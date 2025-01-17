@@ -11,6 +11,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure];
+  [GMSServices provideAPIKey:@"{AIzaSyBzOzDZtVfDlIQ6f5avmkDc9ZItIy6gtNU}"];
   self.moduleName = @"xipper";
   // You can add your custom initial propswebClientId in the dictionary below.
   // They will be passed down to the ViewController used by React Native.

@@ -184,6 +184,8 @@ const SignIn = ({ navigation }) => {
           console.log('Login response:', loginRes);
 
           const { requireRegistration, access_token } = loginRes.data.data;
+          //const { requireRegistration, access_token } = loginRes._response;
+          console.log('heloo==='+ access_token +'==='+ requireRegistration)
 
           if (access_token) {
             await AsyncStorage.setItem("accessToken", access_token);
