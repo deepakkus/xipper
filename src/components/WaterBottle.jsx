@@ -17,7 +17,7 @@ const WaterBottle = ({ service }) => {
         try {
             setLoading(true);
             const response = await GetTravelDeskServices(selectedProperty.XipperID, service);
-            setItems(response.data.map((i) => ({ ...i, quantity: 0 })));
+            setItems(response.data.data.map((i) => ({ ...i, quantity: 0 })));
             console.log(response)
         } catch (error) {
             console.error("Error fetching Travel items:", error);

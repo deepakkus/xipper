@@ -39,7 +39,7 @@ export default function ServicePreview() {
     try {
       setLoading(true);
       const response = await ServiceRequestPreview(params.request.serviceId, params.request.order.checkInId, selectedProfile.XipperID);
-      const details = response?.serviceDetails?.serviceDetails?.[0] || [];
+      const details = response.data?.serviceDetails?.serviceDetails?.[0] || [];
       setService(details);
       console.log(details);
     } catch (err) {

@@ -31,7 +31,7 @@ const Buffet = ({ type }) => {
         try {
             setLoading(true);
             const response = await GetFandBItems(selectedProperty.XipperID, type);
-            const subCategories = response?.subCategories || [];
+            const subCategories = response.data?.subCategories || [];
             const cart = cartId ? await getCart() : null;
             const cartItems = cart?.cartResponse || [];
 
@@ -50,8 +50,8 @@ const Buffet = ({ type }) => {
     const getCart = async () => {
         try {
             const res = await GetFandBCart(cartId);
-            dispatch(setRoomServiceCart(res.data));
-            return res.data;
+            dispatch(setRoomServiceCart(res.data.data));
+            return res.data.data;
         } catch (e) {
             console.error("Error fetching cart:", e);
         }
@@ -69,20 +69,21 @@ const Buffet = ({ type }) => {
 
             const res = await AddFandBItemsToCart(payload);
 
+
             if (res.data.message === "Cart not found" || res.data.cart === "Cart Empty") {
                 setCartId("");
                 setItems(items.map(item => ({ ...item, quantity: 0 })));
                 dispatch(setRoomServiceCart({}));
             } else {
                 const updatedItems = items.map(item => {
-                    const cartItem = res.data.cart.cartOrderItems.find(cartItem => cartItem.itemId === item.itemId);
+                    const cartItem = res.data.data.cart.cartOrderItems.find(cartItem => cartItem.itemId === item.itemId);
                     return cartItem ? { ...item, quantity: cartItem.quantity } : { ...item, quantity: 0 };
                 });
                 setItems(updatedItems);
-                setCartId(res.data.cart.cartId);
-                dispatch(setRoomServiceCart(res.data.cart));
-                dispatch(setFAndBCartId(res.data.cart.cartId));
-                console.log(res.data.cart);
+                setCartId(res.data.data.cart.cartId);
+                dispatch(setRoomServiceCart(res.data.data.cart));
+                dispatch(setFAndBCartId(res.data.data.cart.cartId));
+                console.log(res.data.data.cart);
             }
 
             return res;

@@ -51,7 +51,7 @@ export default function MiniBar() {
         try {
             setLoading(true);
             const res = await GetFandBItems(selectedProperty.XipperID, "Minibar");
-            const subCategories = res?.subCategories || [];
+            const subCategories = res.data?.subCategories || [];
             setAPIData(subCategories.map((i) => ({ ...i, size: i?.quantity, quantity: 0 })));
             const { uniqueCategories, uniqueItemTypes } = extractUniqueCategoryAndItemTypes(subCategories);
             setUniqueDataSet({ uniqueCategories, uniqueItemTypes });
@@ -78,9 +78,9 @@ export default function MiniBar() {
         try {
             setLoading(true);
             const res = await GetFandBCart(cartId || fAndBCartId);
-            dispatch(setRestaurantCart(res.data.cartResponse));
-            setCart(res.data.cartResponse);
-            return res.data;
+            dispatch(setRestaurantCart(res.data.data.cartResponse));
+            setCart(res.data.data.cartResponse);
+            return res.data.data;
         } catch (e) {
             console.error("Error fetching cart:", e);
         } finally {
@@ -105,8 +105,8 @@ export default function MiniBar() {
                 setCart([]);
                 setMinibarData(apiData);
             } else if ([200, 201].includes(res.status)) {
-                dispatch(setFAndBCartId(res?.data?.cart?.cartId));
-                const cart = res?.data?.cart?.cartId || fAndBCartId ? await getCart(res?.data?.cart?.cartId) : null;
+                dispatch(setFAndBCartId(res.data?.data?.cart?.cartId));
+                const cart = res.data?.data?.cart?.cartId || fAndBCartId ? await getCart(res.data?.data?.cart?.cartId) : null;
                 const cartItems = cart?.cartResponse || [];
                 const updatedItems = minibarData.map(item => {
                     const cartItem = cartItems.find(cartItem => cartItem.itemName === item.name);

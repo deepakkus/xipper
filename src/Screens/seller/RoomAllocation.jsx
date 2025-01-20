@@ -59,7 +59,7 @@ const RoomAllocation = ({ onBackPress }) => {
         try {
             setLoading(true);
             const res = await GetCheckInGuestData(bookingDetails.bookingId);
-            const guestInfo = res.data.bookingDetails.userCheckInInfo;
+            const guestInfo = res.data.data.bookingDetails.userCheckInInfo;
             const arr = guestInfo
                 .filter(i => i.user !== null || (i.user === null && Object.keys(i.nonXipperUserInfo).length > 0))
                 .map(i => {
@@ -160,11 +160,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f4f4f4',
-        padding: 10,
+        padding: Platform.OS === 'ios' ? 15 : 10,
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
+        padding: Platform.OS === 'ios' ? 15 : 0,
     },
 
     heading: {

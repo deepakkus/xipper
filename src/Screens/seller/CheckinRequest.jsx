@@ -23,31 +23,32 @@ const CheckinRequest = ({ onBackPress }) => {
     try {
       setLoading(true);
       const res = await GetCheckInGuestData(params.bookingData.bookingId);
-      const guestInfo = res.data.bookingDetails.userCheckInInfo;
-      const arr = guestInfo
-        .filter(i => i.user !== null || (i.user === null && Object.keys(i.nonXipperUserInfo).length > 0))
-        .map(i => {
-          if (i.user !== null) {
-            return i;
-          }
-          return {
-            ...i,
-            user: {
-              address: [i.nonXipperUserInfo.address],
-              contactEmails: [{ email: i.nonXipperUserInfo.email }],
-              contactNumbers: [{ number: i.nonXipperUserInfo.contactNumber }],
-              fullName: i.nonXipperUserInfo.name,
-              gender: i.nonXipperUserInfo.gender,
-              dob: i.nonXipperUserInfo.dob,
-              aadhaarNumber: i.nonXipperUserInfo.aadhaarNumber,
-              PassportFileNumber: i.nonXipperUserInfo.PassportFileNumber,
-              idType: i.nonXipperUserInfo.PassportFileNumber === null ? "Aadhaar Number:" : "Passport:"
-            },
-          };
-        });
+      const guestInfo = res.data.data.bookingDetails.userCheckInInfo;
 
-      dispatch(setBookingDetails(res.data.bookingDetails));
-      setGuestData(arr);
+        const arr = guestInfo
+          .filter(i => i.user !== null || (i.user === null && Object.keys(i.nonXipperUserInfo).length > 0))
+          .map(i => {
+            if (i.user !== null) {
+              return i;
+            }
+            return {
+              ...i,
+              user: {
+                address: [i.nonXipperUserInfo.address],
+                contactEmails: [{ email: i.nonXipperUserInfo.email }],
+                contactNumbers: [{ number: i.nonXipperUserInfo.contactNumber }],
+                fullName: i.nonXipperUserInfo.name,
+                gender: i.nonXipperUserInfo.gender,
+                dob: i.nonXipperUserInfo.dob,
+                aadhaarNumber: i.nonXipperUserInfo.aadhaarNumber,
+                PassportFileNumber: i.nonXipperUserInfo.PassportFileNumber,
+                idType: i.nonXipperUserInfo.PassportFileNumber === null ? "Aadhaar Number:" : "Passport:"
+              },
+            };
+          });
+
+        dispatch(setBookingDetails(res.data.data.bookingDetails));
+        setGuestData(arr);
 
     } catch (e) {
       console.log(e);

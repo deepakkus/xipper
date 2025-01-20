@@ -54,6 +54,7 @@ const Notifications = () => {
         try {
             setLoading(true);
             const res = await GetNotificationList();
+            console.log('rrrrrrr'+ JSON.stringify(res.data.data.notifications))
             setNotification(res.data.data.notifications);
         } catch (e) {
             console.log(e);
