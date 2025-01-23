@@ -20,6 +20,8 @@ const LaundrayChart = () => {
     const [loading, setLoading] = useState(false);
     const [items, setItems] = useState(userServices?.Laundry[0]?.subCategories || []);
 
+    console.log('userServices=='+ JSON.stringify(userServices?.Laundry[0]?.subCategories))
+
     const filteredItems = items?.filter(item =>
         item.name.toLowerCase().includes(searchText.toLowerCase())
     ) || [];
@@ -91,6 +93,7 @@ const LaundrayChart = () => {
             setLoading(true);
             const res = await GetLaundryCart(laundryCartId);
             const cartItems = res?.data?.cartResponse || [];
+            console.log('cartItems=='+ JSON.stringify(res))
             setCart(cartItems);
             const updatedItems = items.map(item => {
                 const cartItem = cartItems.find(cartItem => cartItem.itemName === item.name);

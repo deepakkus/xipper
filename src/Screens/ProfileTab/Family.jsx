@@ -109,15 +109,8 @@ const Family = () => {
 
   return (
     <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2">
-      <ProfileHeader title="Family" />
-      <>
-        <Pressable
-          onPress={() => navigation.navigate('PersonalInfo')}
-          style={styles.backButton}>
-          <BackArrowIcon />
-          <Text style={styles.headerText}>Back</Text>
-        </Pressable>
-      </>
+      <ProfileHeader title="Family" navBack={'PersonalInfo'}/>
+      
       <ScrollView className="flex-1 p-2">
         <View className="mt-2">
           <Text className="text-lg font-bold text-black">Family Members</Text>

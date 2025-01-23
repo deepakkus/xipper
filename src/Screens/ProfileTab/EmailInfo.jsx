@@ -32,8 +32,8 @@ const EmailInfo = () => {
     try {
       setLoading(true);
       const res = await GetEmails();
-      dispatch(setPersonalInfo({ key: "emails", value: res }));
-      setData(res);
+      dispatch(setPersonalInfo({ key: "emails", value: res.data }));
+      setData(res.data);
     } catch (e) {
       console.log(e);
     } finally {
@@ -105,15 +105,8 @@ const EmailInfo = () => {
   return (
     <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2 ">
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader />
-        <>
-                <Pressable
-                  onPress={() => navigation.navigate('PersonalInfo')}
-                  style={styles.backButton}>
-                  <BackArrowIcon />
-                  <Text style={styles.headerText}>Back</Text>
-                </Pressable>
-              </>
+        <ProfileHeader navBack={'PersonalInfo'} />
+       
         <Text className="font-psemibold text-lg text-black ">Email</Text>
         {data.length > 0
           ? data.map((item, index) => (

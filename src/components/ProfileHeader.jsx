@@ -8,17 +8,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
 import { getTextClassInstance } from "../utils/TextClass";
 
-const ProfileHeader = () => {
+const ProfileHeader = (props) => {
   const navigation = useNavigation();
   const [profileData, setProfileData] = useState({})
   const { userData } = useSelector((state) => state.account)
   const { selectedProfile } = useSelector((state) => state.account);
   const textClass = getTextClassInstance();
 
+  
+  const goBackToScreen = () => {
+    if(props.navBack)
+    {
+      navigation.navigate(props.navBack)
+    }
+    else{
+      navigation.goBack()
+    }
+  }
   return (
     <View className="mb-6">
       <View className={Platform.OS === 'ios' ? "flex-row justify-between items-center p-2" : "flex-row justify-between items-center"}>
-        <Pressable onPress={() => navigation.goBack()} className="h-auto">
+        <Pressable onPress={() => goBackToScreen()} className="h-auto">
           <BackArrowIcon />
         </Pressable>
         <Text className="font-poppins font-header text-header text-black text-center">{textClass.getTextString('TXT27')}</Text>

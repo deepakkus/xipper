@@ -536,7 +536,7 @@ import {PhoneIcon, LocationIcon} from '../../assets/images/Icons/PersonalInfo';
 import {ThreeDotIcon, BackArrowIcon} from '../../assets/images/Icons/ArrowIcon';
 import {GetAddresses} from '../../services/profileService';
 import {setPersonalInfo} from '../../redux/accountRedux';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
@@ -618,7 +618,8 @@ const AddressBook = () => {
       </View>
 
       <MapView
-        provider={PROVIDER_GOOGLE}
+        //provider={PROVIDER_GOOGLE}
+        provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
         style={styles.map}
         region={mapRegion}
         showsUserLocation={true}
@@ -657,15 +658,8 @@ const AddressBook = () => {
         <MapScreen />
       ) : (
         <>
-          <ProfileHeader />
-          <View className="p-4">
-            <Pressable
-              onPress={() => navigation.navigate('PersonalInfo')}
-              style={styles.backBtn}>
-                <BackArrowIcon />
-                <Text style={styles.headerText}>Back</Text>
-            </Pressable>
-          </View>
+          <ProfileHeader navBack={'PersonalInfo'}/>
+      
           <View className="p-6">
             <Text style={styles.title}>Address Book</Text>
           </View>

@@ -25,7 +25,6 @@ const FoodItemCard = ({ item, setLoading }) => {
       };
 
       const res = await AddFandBItemsToCart(payload);
-
       if (res.data.message === "Cart not found" || res.data.cart === "Cart Empty") {
         setQuantity(0);
         dispatch(setRestaurantCart([]));

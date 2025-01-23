@@ -106,13 +106,12 @@ const TabIcon = ({ icon, color, name, focused }) => {
 const MenuModal = ({ visible, onClose, onSelectOption }) => {
   const dispatch = useDispatch();
   const navigate = useNavigation();
-  const { profiles, selectedProfile } = useSelector((state) => state.account);
+  const { profiles, selectedProfile, userData } = useSelector((state) => state.account);
   const [showProfiles, setShowProfiles] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [showSystemSettings, setShowSystemSettings] = useState(false);
 
   const handleSelect = (route, enableMenu, data) => {
-   
     if (route === "profiles") {
       setShowProfiles(!showProfiles);
       setShowSystemSettings(false);

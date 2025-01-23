@@ -480,7 +480,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedProperty } from "../../redux/accountRedux";
 import AmenitiesScreen from "../../components/AmenitiesScreen";
 import  { getTextClassInstance } from '../../utils/TextClass';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 
 Geocoder.init('AIzaSyBzOzDZtVfDlIQ6f5avmkDc9ZItIy6gtNU');
@@ -570,6 +570,7 @@ const HotelDetails = () => {
         try {
             setLoading(true);
             const res = await GetUserHotelDetails(selectedProperty?.XipperID);
+            console.log(JSON.stringify(res.data.result))
             setHotelDetails(res.data.result);
         } catch (e) {
             console.log(e);
@@ -610,7 +611,8 @@ const HotelDetails = () => {
         <View style={styles.mapContainer}>
          
           <MapView
-            provider={PROVIDER_GOOGLE}
+            //provider={PROVIDER_GOOGLE}
+            provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
             style={styles.map}
             region={mapRegion}
             showsUserLocation={true}
@@ -629,7 +631,8 @@ const HotelDetails = () => {
             />
           </MapView>
     
-          <TouchableOpacity style={styles.backButton} onPress={toggleModal}>
+          {/* <TouchableOpacity style={styles.backButton} onPress={(toggleModal)}> */}
+          <TouchableOpacity style={styles.backButton} onPress={() => nav.pop()}>
             <BackArrowIcon />
           </TouchableOpacity>
     

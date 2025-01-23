@@ -181,6 +181,7 @@ export const AddLaundryItemsToCart = async (property, itemId) => {
             "itemId": itemId
 
         };
+        console.log('mm-payload'+ JSON.stringify(payload))
         const response = await axios.put(`${BASE_URL}/user/hotel/services/addLaundryItemsToCart`,
             payload, {
             headers: {

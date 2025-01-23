@@ -38,6 +38,7 @@ import {
 } from '../services/hotelService';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
+import ErrorModal from "../modals/ErrorModal";
 
 const formatDate = date => {
   const year = date.getFullYear();
@@ -80,6 +81,13 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
     existingPendingRequests: [],
     submittedRequests: [],
   });
+  const [errorMsg, SetErrorMsg] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleErrorModal = () => setModalVisible(!isModalVisible);
+
+  const handleClose = () => {
+        toggleErrorModal();
+  };
 
   var toDay = new Date();
 
@@ -145,7 +153,10 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
       switch (step) {
         case 1:
           if (!formData.checkIn || !formData.checkOut || !formData.pnr) {
-            throw new Error('Please fill in all fields');
+            setModalVisible(true)
+            SetErrorMsg('Please fill in all fields');
+            return false;
+            //throw new Error('Please fill in all fields');
           }
           const resp = await HotelCheckInStep1(
             hotelData?.XipperID,
@@ -185,7 +196,10 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
           if (selectedVerification === 'Aadhaar') {
             const res = await SendGuestAadhaarOTP(verificationNumber);
             if (res.status !== 200) {
-              throw new Error('Error sending OTP!.');
+              setModalVisible(true)
+              SetErrorMsg('Error sending OTP!.');
+              return false;
+              //throw new Error('Error sending OTP!.');
             } else {
               setFormData({
                 ...formData,
@@ -202,7 +216,10 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
             );
             console.log(verificationResponse);
             if (verificationResponse.status !== 200) {
-              throw new Error('Error Verifying Passport!.');
+              setModalVisible(true)
+              SetErrorMsg('Error Verifying Passport!.');
+              return false;
+              //throw new Error('Error Verifying Passport!.');
             } else {
               data = {
                 passportNumber: '',
@@ -224,8 +241,11 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
             const verificationResponse = await VerifyGuestXipperID(formData);
             console.log(verificationResponse);
             if (verificationResponse.status !== 200) {
-              Alert.alert('Error', verificationResponse.data.message);
-              throw new Error('Error Verifying Xipper Id!.');
+              setModalVisible(true)
+              SetErrorMsg(verificationResponse.data.message);
+              return false;
+              //Alert.alert('Error', verificationResponse.data.message);
+              //throw new Error('Error Verifying Xipper Id!.');
             } else {
               data = {
                 XipperId: formData.xipperId,
@@ -256,7 +276,10 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
           );
           console.log(aadhaarResponse);
           if (aadhaarResponse.status !== 200) {
-            throw new Error('Error Verifying Aadhaar OTP!.');
+            setModalVisible(true)
+            SetErrorMsg('Error Verifying Aadhaar OTP!.');
+            return false;
+            //throw new Error('Error Verifying Aadhaar OTP!.');
           } else {
             data = {
               aadharNumber: formData?.[`aadhaar${currentGuest}`],
@@ -285,7 +308,10 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
           );
           console.log(res);
           if (res.status !== 200) {
-            throw new Error('Error Checking In!.');
+            setModalVisible(true)
+            SetErrorMsg('Error Checking In!.');
+            return false;
+            //throw new Error('Error Checking In!.');
           } else {
             setStep(5);
             setHeading('');
@@ -1042,6 +1068,17 @@ const VerifyContent = ({setHeading, toggleModal, setIsCheckIn, hotelData}) => {
           </Text>
         </View>
       )}
+      {
+        errorMsg ? (
+          <ErrorModal
+          isModalVisible={isModalVisible}
+          toggleErrorModal={toggleErrorModal}
+          handleBack={handleClose}
+          heading={"Error!"}
+          content={errorMsg}
+       />
+        ) : ''
+      }
     </>
   );
 };

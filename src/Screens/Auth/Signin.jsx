@@ -29,6 +29,7 @@ import { BASE_URL, GOOGLE_WEB_CLIENT_ID, OTPLESS_APP_ID } from '../helper';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoginRegisterData } from '../../redux/authRedux';
 import CircularLoader from '../../components/CircularLoader';
+import ErrorModal from "../../modals/ErrorModal";
 
 const SignIn = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -46,6 +47,14 @@ const SignIn = ({ navigation }) => {
     otp: '',
     channelType: '',
   });
+
+    const [errorMsg, SetErrorMsg] = useState('');
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleErrorModal = () => setModalVisible(!isModalVisible);
+  
+    const handleClose = () => {
+          toggleErrorModal();
+    };
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -122,9 +131,12 @@ const SignIn = ({ navigation }) => {
       let headlessRequest = {};
       const { phoneNumber, countryCode, otp, channelType } = form;
       if (phoneNumber.length < 10) {
-        Alert.alert("Invalid Entry", "Please enter a valid Mobile Number or Email ID!.");
-        throw new Error("Invalid Mobile or Email")
-        return;
+        // Alert.alert("Invalid Entry", "Please enter a valid Mobile Number or Email ID!.");
+        // throw new Error("Invalid Mobile or Email")
+        // return;
+        setModalVisible(true);
+        SetErrorMsg('Please enter a valid Mobile Number or Email ID!.');
+        return false;
       }
       if (phoneNumber) {
         if (isNaN(Number(phoneNumber))) {
@@ -450,6 +462,16 @@ const SignIn = ({ navigation }) => {
             </Text>
             .
           </Text>
+          { errorMsg ? (
+          <ErrorModal
+              isModalVisible={isModalVisible}
+              toggleErrorModal={toggleErrorModal}
+              handleBack={handleClose}
+              heading={"Error!"}
+              content={errorMsg}
+          />
+            ) : ''
+          }
         </View>
 
       </ScrollView>}

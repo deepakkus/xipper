@@ -29,8 +29,7 @@ const Profile = () => {
   return (
     <SafeAreaView className="flex-1 px-5 bg-gray-100">
       <ScrollView className="mt-2" showsVerticalScrollIndicator={false}>
-      <ProfileHeader/>
-
+      <ProfileHeader  navBack={''}/>
         {selectedProfile.type === 'user' ? (
           <>
             {/* Personal Info */}

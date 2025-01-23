@@ -36,9 +36,8 @@ const PhoneNumber = () => {
     try {
       setLoading(true);
       const res = await GetPhoneNumbers();
-      console.log(res);
-      dispatch(setPersonalInfo({key: 'phoneNumbers', value: res}));
-      setData(res);
+      dispatch(setPersonalInfo({key: 'phoneNumbers', value: res.data}));
+      setData(res.data);
     } catch (e) {
       console.log(e);
     } finally {
@@ -115,15 +114,8 @@ const PhoneNumber = () => {
 
   return (
     <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2">
-      <ProfileHeader />
-      <>
-        <Pressable
-          onPress={() => navigation.navigate('PersonalInfo')}
-          style={styles.backButton}>
-          <BackArrowIcon />
-          <Text style={styles.headerText}>Back</Text>
-        </Pressable>
-      </>
+      <ProfileHeader navBack={'PersonalInfo'}/>
+     
       <Text className="font-psemibold text-lg text-black">
         {textClass.getTextString('TXT1')}
       </Text>

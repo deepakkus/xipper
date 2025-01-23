@@ -125,12 +125,13 @@ const CustomerDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: (Platform.OS === 'ios') ? 35 : 10,
+    padding: (Platform.OS === 'ios') ? 30 : 10,
     backgroundColor: '#F5F5F5', // Light background color for contrast
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: (Platform.OS === 'ios') ? 10 : 0,
     marginBottom: 10, // Space between header and content
   },
   backButton: {

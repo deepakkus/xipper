@@ -113,7 +113,7 @@ const debounce = (func, delay) => {
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { userData } = useSelector((state) => state.account);
+  const { userData } = useSelector((state) => state.account)
   const { notifications } = useSelector((state) => state.authenticationRedux);
   const [loading, setLoading] = useState(false);
   const [isBusiness, setIsBusiness] = useState(false);
@@ -205,6 +205,7 @@ const Home = () => {
       const data = extractInfo(res.data);
       dispatch(setAvailableProfiles(data));
       dispatch(setSelectedProfile(data?.[0]))
+
     } catch (err) {
       console.error('Error fetching user details:', err);
       await AsyncStorage.clear();
@@ -216,20 +217,21 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (!userData["fullName"] && !userData["XipperID"])
+    if (!userData?.user?.fullName && !userData?.user?.XipperID){
       fetchUserDetails();
+    }
   }, []);
 
   useEffect(() => {
+    if(notifications.length > 0)
+    {
       fetchUserDetails();
+    }   
 }, [notifications])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar
-        backgroundColor={`${selectedProfile.type === "user" ? "#06A77D" : selectedProfile.type === "company" ? "#6D38C3" : "#FE830C"}`}
-        barStyle="light-content"
-      />
+     
       <Animated.View
         style={{
           transform: [{ translateY: translateHeader }],

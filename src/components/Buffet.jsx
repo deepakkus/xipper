@@ -69,7 +69,6 @@ const Buffet = ({ type }) => {
 
             const res = await AddFandBItemsToCart(payload);
 
-
             if (res.data.message === "Cart not found" || res.data.cart === "Cart Empty") {
                 setCartId("");
                 setItems(items.map(item => ({ ...item, quantity: 0 })));

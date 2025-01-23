@@ -36,7 +36,8 @@ export const GetPhoneNumbers = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.data.userPhoneDetails;
+    //return response.data.data.userPhoneDetails;
+    return response.data.data;
   } catch (err) {
     console.log('Error fetching phone details:----------------', err.response.data, err);
   }
@@ -144,7 +145,8 @@ export const GetEmails = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.data.userEmailDetails;
+    return response.data.data;
+    //return response.data.data.userEmailDetails;
   } catch (err) {
     console.log('Error fetching email details:----------------', err.response.data, err);
   }

@@ -81,7 +81,7 @@ const RoomAllocation = ({ onBackPress }) => {
                         },
                     };
                 });
-            const temp = res.data.bookingDetails
+            const temp = res.data.data.bookingDetails;
             dispatch(setBookingDetails({ ...temp, userCheckInInfo: arr }));
 
         } catch (e) {

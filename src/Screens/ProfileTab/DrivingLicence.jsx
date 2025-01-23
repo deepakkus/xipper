@@ -42,7 +42,7 @@ const DrivingLicence = () => {
 
   return (
     <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2 ">
-      <ProfileHeader />
+      <ProfileHeader navBack={'GovernmentId'}/>
       <Text className="font-psemibold text-lg text-black ">
         Driving Numbers
       </Text>

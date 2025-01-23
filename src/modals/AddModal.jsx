@@ -16,6 +16,7 @@ import { sendAadhaarOTP, verifyAadhaarOTP, VerifyDrivingLicence, VerifyPan, Veri
 import { OTPLESS_APP_ID } from "../Screens/helper";
 import { OtplessHeadlessModule } from "otpless-react-native";
 import { useSelector } from "react-redux";
+import ErrorModal from "../modals/ErrorModal";
 
 const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,6 +35,13 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
   const handlePassportChange = newPassportData => {
     setPassportData(newPassportData);
   };
+
+      const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
+      const toggleErrorModal = () => setIsErrorModalVisible(!isErrorModalVisible);
+    
+      const handleClose = () => {
+            toggleErrorModal();
+      };
 
   const { selectedProfile } = useSelector((state) => state.account);
   const textColor = selectedProfile.type === "user" ? '#06A77D' : selectedProfile.type === 'company' ? '#6D38C3' : '#FE830C';
@@ -65,9 +73,12 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
       }
       let headlessRequest = {};
       if (inputValue.length < 10) {
-        Alert.alert("Invalid Entry", "Please enter a valid Mobile Number or Email ID!.");
-        throw new Error("Invalid Mobile or Email")
-        return;
+        setModalVisible(true);
+        setError('Please enter a valid Mobile Number or Email ID!.');
+        return false;
+        // Alert.alert("Invalid Entry", "Please enter a valid Mobile Number or Email ID!.");
+        // throw new Error("Invalid Mobile or Email")
+        // return;
       }
       if (inputValue) {
         if (isNaN(Number(inputValue))) {
@@ -123,7 +134,10 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
           res = await VerifyPassport(passportData.file_number, passportData.dob);
           break;
         default:
-          throw new Error("Invalid verification type");
+        setModalVisible(true);
+        setError('Invalid verification type');
+        return false;
+          //throw new Error("Invalid verification type");
       }
 
       console.log("Verification Response:", res);
@@ -131,11 +145,17 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
       if (res.status === 200) {
         next2Page();
       } else {
-        setError(`Invalid ${getTypeText()}`);
+        setModalVisible(true);
+          setError(`Invalid ${getTypeText()}`);
+          return false;
+        //setError(`Invalid ${getTypeText()}`);
       }
     } catch (error) {
       console.log("Error during verification:", error);
-      setError("An error occurred during verification. Please try again.");
+      setModalVisible(true);
+          setError("An error occurred during verification. Please try again.");
+          return false;
+      //setError("An error occurred during verification. Please try again.");
     }
   };
 
@@ -154,7 +174,10 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
           startHeadless();
           break;
         default:
-          throw new Error("Invalid verification type");
+          setModalVisible(true);
+          setError('Invalid verification type');
+          return false;
+          //throw new Error("Invalid verification type");
       }
 
       console.log("Verification Response:", res);
@@ -162,11 +185,17 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
       if (["phone", "email"].includes(type) || res.status === 200) {
         nextPage();
       } else {
-        setError(`Invalid ${getTypeText()}`);
+        setModalVisible(true);
+          setError(`Invalid ${getTypeText()}`);
+          return false;
+        //setError(`Invalid ${getTypeText()}`);
       }
     } catch (error) {
       console.log("Error during verification:", error);
-      setError("An error occurred during verification. Please try again.");
+      setModalVisible(true);
+          setError("An error occurred during verification. Please try again.");
+          return false;
+      //setError("An error occurred during verification. Please try again.");
     }
   };
 
@@ -185,7 +214,10 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
           startHeadless();
           break;
         default:
-          throw new Error("Invalid verification type");
+          setModalVisible(true);
+          setError('Invalid verification type');
+          return false;
+          //throw new Error("Invalid verification type");
       }
 
       console.log("Verification Response:", res);
@@ -193,11 +225,17 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
       if (["phone", "email"].includes(type) || res.status === 200) {
         nextPage();
       } else {
-        setError(`Invalid ${getTypeText()}`);
+        setModalVisible(true);
+          setError(`Invalid ${getTypeText()}`);
+          return false;
+        //setError(`Invalid ${getTypeText()}`);
       }
     } catch (error) {
       console.log("Error during verification:", error);
-      setError("An error occurred during verification. Please try again.");
+      setModalVisible(true);
+          setError("An error occurred during verification. Please try again.");
+          return false;
+      //setError("An error occurred during verification. Please try again.");
     }
   };
 
@@ -287,7 +325,7 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
                 />
               )}
             </View>
-            {error.length > 0 && <Text className="text-red-500 mt-2">{error}</Text>}
+            {/* {error.length > 0 && <Text className="text-red-500 mt-2">{error}</Text>} */}
             {type === "phone" || type === "email" || type === "aadhar" ? (
               <Pressable
                 style={[styles.verifyButton, { backgroundColor: bgColor }]}
@@ -300,6 +338,16 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
                 <Text style={styles.verifyButtonText}>Add</Text>
               </Pressable>
             )}
+            { error ? (
+          <ErrorModal
+              isModalVisible={isErrorModalVisible}
+              toggleErrorModal={toggleErrorModal}
+              handleBack={handleClose}
+              heading={"Error!"}
+              content={error}
+          />
+            ) : ''
+          }
           </View>
         );
       case 2:
@@ -322,6 +370,16 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
             <Pressable style={[styles.verifyButton, { backgroundColor: bgColor }]} onPress={verifyOTP}>
               <Text style={styles.verifyButtonText}>Verify OTP</Text>
             </Pressable>
+            { error ? (
+          <ErrorModal
+              isModalVisible={isErrorModalVisible}
+              toggleErrorModal={toggleErrorModal}
+              handleBack={handleClose}
+              heading={"Error!"}
+              content={error}
+          />
+            ) : ''
+          }
           </View>
         );
       case 3:
@@ -342,6 +400,16 @@ const AddModal = ({ isModalVisible, toggleModal, addNumber, type }) => {
               Your {getTypeText()}
               {"\n"} was updated
             </Text>
+            { error ? (
+          <ErrorModal
+              isModalVisible={isErrorModalVisible}
+              toggleErrorModal={toggleErrorModal}
+              handleBack={handleClose}
+              heading={"Error!"}
+              content={error}
+          />
+            ) : ''
+          }
           </View>
         );
       default:

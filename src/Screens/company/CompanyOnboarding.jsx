@@ -57,6 +57,14 @@ const CompanyOnboarding = () => {
   const appId = OTPLESS_APP_ID;
   const [companyList, setCompanyList] = useState([]);
 
+    const [errorMsg, SetErrorMsg] = useState('');
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleErrorModal = () => setModalVisible(!isModalVisible);
+    
+    const handleClose = () => {
+           toggleErrorModal();
+    };
+
   const fetchList = async () => {
     try {
       setLoading(true);
@@ -328,9 +336,12 @@ const CompanyOnboarding = () => {
       const { email, countryCode, otp, channelType } = formData;
       console.log("emsil", email, otp);
       if (email.length < 10) {
-        Alert.alert("Invalid Entry", "Please enter a valid Email ID!.");
-        throw new Error("Invalid Email")
-        return;
+        setModalVisible(true);
+        SetErrorMsg('Please enter a valid Mobile Number or Email ID!.');
+        return false;
+        // Alert.alert("Invalid Entry", "Please enter a valid Email ID!.");
+        // throw new Error("Invalid Email")
+        // return;
       }
       if (email) {
         if (isNaN(Number(email))) {
@@ -386,20 +397,29 @@ const CompanyOnboarding = () => {
       setLoading(true);
       let res;
       if (!formData?.[key].trim()) {
-        throw new Error("Mandatory field missing");
-        return;
+        setModalVisible(true);
+        SetErrorMsg('Mandatory field missing');
+        return false;
+        // throw new Error("Mandatory field missing");
+        // return;
       }
       switch (key) {
         case "panNumber":
           if (!formData?.["businessName"].trim()) {
-            throw new Error("Please add Business Name!.");
+            setModalVisible(true);
+            SetErrorMsg('Please add Business Name!.');
+            return false;
+            //throw new Error("Please add Business Name!.");
           };
           res = await VerifyCompanyPan(formData.panNumber, formData.companyType, formData.businessName);
           console.log("res", res);
           break;
         case "gstinNumber":
           if (formData.gstinNumber.match(/([A-Z]{5}\d{4}[A-Z])/) !== formData.panNumber) {
-            throw new Error("PAN & GST Number mismatch!.");
+            setModalVisible(true);
+            SetErrorMsg('PAN & GST Number mismatch!.');
+            return false;
+            //throw new Error("PAN & GST Number mismatch!.");
           }
           res = await VerifyGST(formData.gstinNumber, companyId);
           break;
@@ -429,13 +449,22 @@ const CompanyOnboarding = () => {
           break;
         case "ifscCode":
           if (!formData?.["accountNumber"].trim()) {
-            throw new Error("Please enter Account Number!.");
+            setModalVisible(true);
+            SetErrorMsg('Please enter Account Number!.');
+            return false;
+            //throw new Error("Please enter Account Number!.");
           };
           if (formData?.["accountNumber"].trim() !== formData?.["reEnterAccountNumber"].trim()) {
-            throw new Error("Account Number Mismatch!.");
+            setModalVisible(true);
+            SetErrorMsg('Account Number Mismatch!.');
+            return false;
+            //throw new Error("Account Number Mismatch!.");
           };
           if (!formData?.["ifscCode"].trim()) {
-            throw new Error("Please enter valid IFSC Code!.");
+            setModalVisible(true);
+            SetErrorMsg('Please enter valid IFSC Code!.');
+            return false;
+            //throw new Error("Please enter valid IFSC Code!.");
           };
           res = await VerifyBankDetails(formData, companyId);
           break;
@@ -735,6 +764,16 @@ const CompanyOnboarding = () => {
               <Text style={styles.continueButtonText}>Continue</Text>
             </TouchableOpacity>
           </View>
+          { errorMsg ? (
+          <ErrorModal
+              isModalVisible={isModalVisible}
+              toggleErrorModal={toggleErrorModal}
+              handleBack={handleClose}
+              heading={"Error!"}
+              content={errorMsg}
+          />
+            ) : ''
+          }
         </View>
       </ScrollView>
       {loading && <CircularLoader />}

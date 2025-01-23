@@ -13,6 +13,7 @@ const Issue = ({ title, serviceData, data, type }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [otherMessage, setOtherMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    console.log('serviceData=='+ JSON.stringify(serviceData))
 
     const options = serviceData.filter((i) => i.name === title)?.[0]?.data
 

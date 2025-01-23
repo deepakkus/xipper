@@ -46,7 +46,7 @@ const CheckinRequest = ({ onBackPress }) => {
               },
             };
           });
-
+         
         dispatch(setBookingDetails(res.data.data.bookingDetails));
         setGuestData(arr);
 
