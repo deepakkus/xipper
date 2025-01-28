@@ -162,13 +162,13 @@ export const CheckOutGuest = async () => {
     }
 }
 
-export const GetBill = async () => {
+export const GetBill = async ($hXipperID, $bookingId, $roomNumber) => {
     try {
         const token = await AsyncStorage.getItem('accessToken');
         const payload = {
-            "bookingId": "avishekpnr1",
-            "hXipperId": "XH76140714",
-            "roomNumber": "107"
+            "bookingId": $bookingId,//"avishekpnr1",
+            "hXipperId": $hXipperID,//"XH76140714",
+            "roomNumber": $roomNumber//"107"
         }
         const response = await axios.post(`${BASE_URL}/hotel/sellerDashboard/getCustomersDetails`,payload,
             {
@@ -180,6 +180,22 @@ export const GetBill = async () => {
         return response;
     } catch (err) {
         console.log('Error getting bill:----------------', err.response.data, err);
+        return err.response
+    }
+}
+
+export const GetCustomersList = async (hXipperID) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/hotel/sellerDashboard/getCustomersList?hXipperId=${hXipperID}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+        return response;
+    } catch (err) {
+        console.log('Error getting customer list:----------------', `${BASE_URL}/hotel/sellerDashboard/getCustomersList?hXipperId=${hXipperID}`);
         return err.response
     }
 }

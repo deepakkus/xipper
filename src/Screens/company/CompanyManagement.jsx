@@ -155,7 +155,7 @@ const CompanyManagement = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await GetCompanyDashboard();
+        const response = await GetCompanyDashboard(selectedProfile.XipperID);
         setData(response.data.data?.["employees"]);
       } catch (err) {
         console.log(err);

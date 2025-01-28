@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 
 const RoomComponent = ({ data, mainData }) => {
   const { selectedProfile } = useSelector(state => state.account);
-  console.log("room779900", JSON.stringify(data));
   const nav = useNavigation();
   return (
     <View >

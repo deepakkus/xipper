@@ -20,10 +20,12 @@ const CompanyList = () => {
     setVisibleMenuIndex(visibleMenuIndex === index ? null : index);
   };
 
+  console.log('jj999gg'+ JSON.stringify(pendingRegistrations))
   const fetchData = async () => {
     try {
       setLoading(true);
       const res = await GetPendingRegistrationList();
+      console.log('jjgg'+ JSON.stringify(res))
       dispatch(setPendingRegistrationList(res.data.data.pendingRegistrations))
       res.data.data.pendingRegistrations.length === 0 && nav.navigate("Account/CompanyOnboading");
     } catch (e) {

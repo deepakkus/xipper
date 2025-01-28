@@ -24,7 +24,6 @@ export const GetPendingRegistrationList = async () => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(response)
         return response;
     } catch (err) {
         console.log('Error fetching company onboarding last step:----------------', err.response.data, err);

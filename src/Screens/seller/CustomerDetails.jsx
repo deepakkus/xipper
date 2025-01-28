@@ -5,12 +5,10 @@ import { BackArrowIcon } from '../../assets/images/Icons/ArrowIcon';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Approval from './Approval';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { CheckOutGuest } from '../../services/sellerService';
+import { CheckOutGuest, GetCustomersList } from '../../services/sellerService';
 import { CrossIcon } from '../../assets/images/Icons/ArrowIcon';
 import BillSeller from './BillSeller';
 import Orders from './Order';
-
-
 
 const CustomerDetails = () => {
   const nav = useNavigation();
@@ -125,13 +123,14 @@ const CustomerDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: (Platform.OS === 'ios') ? 30 : 10,
+    // padding: (Platform.OS === 'ios') ? 30 : 10,
+    padding: 10,
     backgroundColor: '#F5F5F5', // Light background color for contrast
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: (Platform.OS === 'ios') ? 10 : 0,
+    paddingTop: (Platform.OS === 'ios') ? 30 : 0,
     marginBottom: 10, // Space between header and content
   },
   backButton: {

@@ -7,29 +7,107 @@ import BillComponent from './BillComponent';
 import Total from "./Total";
 import ConfirmingCheckOut from "./ConfirmingCheckOut"; 
 import RoomNumber from "./RoomNumber";
-import { GetBill } from "../../services/sellerService";
+import { GetBill, GetCustomersList } from "../../services/sellerService";
+import { useDispatch, useSelector } from 'react-redux';
 
 const BillSeller = () => {
     const navigation = useNavigation();
+    const { selectedProfile } = useSelector((state) => state.account);
+
     const [isModalVisible, setModalVisible] = useState(false); 
     const [isCodeModalVisible, setCodeModalVisible] = useState(false); 
     const [isConfirmingCheckOutVisible, setConfirmingCheckOutVisible] = useState(false); 
     const [isCollectDisabled, setCollectDisabled] = useState(false); 
     const [selectedRoomNumber, setSelectedRoomNumber] = useState('Room Number'); 
     const [collectButtonText, setCollectButtonText] = useState("Collect");
+    const [customerDetails, setCustomerDetails] = useState({});
+    const [billDetailsFood, setBillDetailsFood] = useState({});
+    const [billDetailsBeverage, setBillDetailsBeverage] = useState({});
+    const [billDetailsServices, setBillDetailsServices] = useState({});
+
+    const [billTotalFood, setBillTotalFood] = useState('0');
+    const [billTotalBeverage, setBillTotalBeverage] = useState('0');
+    const [billTotalServices, setBillTotalServices] = useState('0');
+
+    const [finalBillData, setFinalBillData] = useState(0);
+    
+
+    useEffect(() => {
+        getCustomerListData();
+      }, [selectedProfile]);
+
+      const events = [
+        { date: "2025-01-23T10:26:43.135Z", description: "Meeting", startTime: "11:00", endTime: "12:00" },
+        { date: "2025-01-23T10:26:43.135Z", description: "Coference", startTime: "18:00", endTime: "19:00" },
+        { date: "2025-01-23T10:26:43.135Z", description: "Team Coference", startTime: "18:00", endTime: "19:00" },
+        { date: "2025-01-28T10:26:43.135Z", description: "Happy hour cocktail" },
+        { date: "2025-01-28T10:26:43.135Z", description: "MEditation Class" },
+        { date: "2025-01-25T10:26:43.135Z", description: "MEditation Class" },
+    ];
+    
+    const groupBy = (arr, criteria) =>
+        arr.reduce((obj, item) => {
+            let key = typeof criteria === "function" ? criteria(item) : item[criteria];
+            if (!obj.hasOwnProperty(key)) obj[key] = [];
+            obj[key].push(item);
+            return obj;
+        }, {});
+        //let newDate = date.substring(0, 10);
+    const grouped = groupBy(events, "date");
+        //console.log('llll'+ JSON.stringify(grouped))
 
     const fetchbill = async () => {
         try {
-            const response = await GetBill();
-            console.log(response);
+            const response = await GetBill(selectedProfile?.XipperID, customerDetails[0]?.bookingId, customerDetails[0]?.roomNumber);
+            console.log(JSON.stringify(response?.data?.data?.bill?.billBreakdown))
+            //setBillDetailsFood(response?.data?.data?.bill?.billBreakdown?.["Food and Beverage"]?.Food?.itemWiseTaxation);
+            setFinalBillData(response?.data?.data?.bill?.finalBill);
+            // const grouping = _.groupBy(response?.data?.data?.bill?.billBreakdown?.["Food and Beverage"]?.Food?.itemWiseTaxation, 
+            //     element => element.orderDate.substring(0, 10))
+            // const sections = _.map(grouping, (items, date) => ({
+            // date: date,
+            // items: items
+            // }));
+
+            const groupedFood = groupBy(response?.data?.data?.bill?.billBreakdown?.["Food and Beverage"]?.Food?.itemWiseTaxation, "orderDate");
+            const groupedBeverage = groupBy(response?.data?.data?.bill?.billBreakdown?.["Food and Beverage"]?.Beverage?.itemWiseTaxation, "orderDate");
+            const groupedServices = groupBy(response?.data?.data?.bill?.billBreakdown?.Services?.itemWiseTaxation, "orderDate");
+
+            const groupedFoodTotal = response?.data?.data?.bill?.billBreakdown?.["Food and Beverage"]?.Food?.totalPayablePriceAfterTax;
+            const groupedBeverageTotal = response?.data?.data?.bill?.billBreakdown?.["Food and Beverage"]?.Beverage?.totalPayablePriceAfterTax;
+            const groupedServicesTotal = response?.data?.data?.bill?.billBreakdown?.Services?.totalPayablePriceAfterTax;
+            const finalBillAmount = response?.data?.data?.bill?.finalBill;
+           
+            //console.log('lll99l'+ JSON.stringify(grouped))
+            setBillDetailsFood(groupedFood)
+            setBillDetailsBeverage(groupedBeverage)
+            setBillDetailsServices(groupedServices)
+
+            setBillTotalFood(groupedFoodTotal)
+            setBillTotalBeverage(groupedBeverageTotal)
+            setBillTotalServices(groupedServicesTotal)
+            setFinalBillData(finalBillAmount);
+
+            //console.log('sections==='+sections);
         } catch (err) {
             console.log(err);
         }
     };
+    
+      const getCustomerListData = async () => {
+        try {
+          const response = await GetCustomersList(selectedProfile?.XipperID);
+          if (response && response.status === 200) {
+            setCustomerDetails(response.data.data.bookingDetails);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
     useEffect(() => {
         fetchbill();
-    }, []);
+    }, [customerDetails, selectedProfile]);
 
     const handleCheckOut = () => {
         if (isCollectDisabled) {
@@ -58,19 +136,24 @@ const BillSeller = () => {
     const handleCloseConfirmingCheckOut = () => {
         setConfirmingCheckOutVisible(false); 
     };
-
+   
     return (
         <>
             <StatusBar hidden={false} />
                 <View className="mt-4 mx-4 p-5 bg-white rounded-lg border border-gray-300">
-                    <BillComponent title={"Food"} />
-                    <BillComponent />
+                    {/* {Object.entries(billDetails).map(([key,val])=>
+                        (
+                            <BillComponent title={"Food"} billDetails={val} key={key}/>
+                        )
+                    )}             */}
+                    <BillComponent title={"Food"} billDetails={billDetailsFood}/>
                 </View>
                 <View className="mt-4 mx-4 p-5 bg-white rounded-lg border border-gray-300">
-                    <BillComponent title={"Services"} />
+                    <BillComponent title={"Services"} billDetails={billDetailsServices}/>
                 </View>
                 <View className="mt-4 mx-4 p-5 bg-white rounded-lg border border-gray-300">
-                    <Total />
+                    {/* <Total foodTotal={billTotalFood} beverageTotal={billTotalBeverage} servicesTotal={billTotalServices} finalBillAmountData={finalBillData}/> */}
+                    <Total foodTotal={billTotalFood} beverageTotal={billTotalBeverage} servicesTotal={billTotalServices} finalBillAmountData={finalBillData} />
                 </View>
                 <View className="flex-row justify-between mx-5 my-5">
                     <Pressable
