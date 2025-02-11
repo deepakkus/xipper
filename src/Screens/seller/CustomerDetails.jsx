@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Pressable, Modal, ScrollView, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, Pressable, Modal, ScrollView, SafeAreaView, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import BookingDetails from './BookingDetails';
 import { BackArrowIcon } from '../../assets/images/Icons/ArrowIcon';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -17,6 +17,7 @@ const CustomerDetails = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
   const [viewBill, setViewBill] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
 
   const handleCheckOut = () => {
     setIsModalVisible(true);
@@ -50,11 +51,13 @@ const CustomerDetails = () => {
         <BookingDetails showDetails={true} handleViewBill={handleViewBill} />
 
         {viewBill ? (
-          <View>
-          <SafeAreaView>
-            <ScrollView>
+          <View style={{ width: '100%', height: Dimensions.get('window').height, flex:1 }}>
+          <SafeAreaView style={{flex:1}}>
+          <ScrollView contentContainerStyle={{flexGrow:1,justifyContent:'space- between'}}>
+            <View style={{flex: 1, paddingBottom: 20, paddingTop: 10}}>
               <Orders />
               <BillSeller />
+              </View>
             </ScrollView>
           </SafeAreaView>
         </View>

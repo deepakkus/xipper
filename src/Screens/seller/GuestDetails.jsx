@@ -1,9 +1,8 @@
 import { maskNumber } from '../../utils/utils';
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Platform } from 'react-native';
 
 const GuestDetails = ({ guestData }) => {
-  console.log(guestData)
   const addressComponents = [
     guestData?.user?.address?.[0]?.house,
     guestData?.user?.address?.[0]?.street,
@@ -12,7 +11,7 @@ const GuestDetails = ({ guestData }) => {
     guestData?.user?.address?.[0]?.state,
     guestData?.user?.address?.[0]?.pin,
   ];
-
+ 
   const filteredAddress = typeof (guestData?.user?.address?.[0]) === "string"
     ? guestData?.user?.address?.[0]
     : addressComponents.filter(Boolean).join(', ');
@@ -43,7 +42,7 @@ const GuestDetails = ({ guestData }) => {
           </View>
         </>)
       }
-      {guestData.user?.contactEmails.length > 0 && guestData.user.contactEmails[0].email && (
+      {guestData?.user?.contactEmails.length > 0 && guestData.user.contactEmails[0].email && (
         <>
           <View style={styles.separator} />
           <View style={styles.row}>
@@ -52,7 +51,7 @@ const GuestDetails = ({ guestData }) => {
           </View>
         </>
       )}
-      {guestData.user?.dob && (
+      {guestData?.user?.dob && (
         <>
           <View style={styles.separator} />
           <View style={styles.row}>
@@ -61,7 +60,7 @@ const GuestDetails = ({ guestData }) => {
           </View>
         </>
       )}
-      {guestData.user?.gender && (
+      {guestData?.user?.gender && (
         <>
           <View style={styles.separator} />
           <View style={styles.row}>
@@ -70,7 +69,7 @@ const GuestDetails = ({ guestData }) => {
           </View>
         </>
       )}
-      {guestData.user?.aadhaarNumber ? (
+      {guestData?.user?.aadhaarNumber ? (
         <>
           <View style={styles.separator} />
           <View style={styles.row}>
@@ -79,7 +78,7 @@ const GuestDetails = ({ guestData }) => {
           </View>
         </>
       ) : <></>}
-      {guestData.user?.PassportFileNumber ? (
+      {guestData?.user?.PassportFileNumber ? (
         <>
           <View style={styles.separator} />
           <View style={styles.row}>
@@ -89,7 +88,7 @@ const GuestDetails = ({ guestData }) => {
         </>
       ) : <></>}
 
-      {guestData.user?.documents && guestData.user?.documents?.passportFileNumber ? (
+      {guestData?.user?.documents && guestData.user?.documents?.passportFileNumber ? (
         <>
           <View style={styles.separator} />
           <View style={styles.row}>
@@ -98,7 +97,7 @@ const GuestDetails = ({ guestData }) => {
           </View>
         </>
       ) : <></>}
-      {guestData.user?.documents && guestData.user?.documents?.aadhaarNumber ? (
+      {guestData?.user?.documents && guestData.user?.documents?.aadhaarNumber ? (
         <>
           <View style={styles.separator} />
           <View style={styles.row}>

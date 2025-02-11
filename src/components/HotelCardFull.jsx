@@ -24,6 +24,7 @@ const scaleFontSize = (size) => {
 };
 
 const HotelCardFull = ({ data }) => {
+
   const nav = useNavigation();
   const dispatch = useDispatch();
   const { selectedProfile } = useSelector((state) => state.account);

@@ -35,6 +35,21 @@ export const GetServiceDetails = async (id, cat) => {
         console.log('Error fetching hotel services:----------------', err.response.data, err);
     }
 };
+export const GetOrderDetails = async () => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+       
+        const response = await axios.get(`${BASE_URL}/user/hotelOrders`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+    });
+        console.log(response)
+        return response.data;
+    } catch (err) {
+        console.log('Error fetching hotel orders:----------------', err.response.data, err);
+    }
+};
 export const GetHouseKeepingItems = async (id, cat) => {
     try {
         const token = await AsyncStorage.getItem('accessToken');

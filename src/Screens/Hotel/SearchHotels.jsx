@@ -103,7 +103,7 @@ const SearchHotels = () => {
       setLoading(true);
       try {
         const response = await FetchSearchSuggestions(query);
-        setSuggestions(response.data.data.results || []);
+        setSuggestions(response.data?.data?.results || []);
       } catch (error) {
         console.error('Error fetching suggestions:', error);
       } finally {

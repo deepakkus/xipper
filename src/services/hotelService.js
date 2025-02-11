@@ -3,6 +3,66 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../Screens/helper";
 import { formatDate } from "../utils/utils";
 
+export const GetSellerProfile = async (hotelId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/hotelDetails/gethotel`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              hotelid: hotelId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
+export const GetHotelPhoneNumbers = async (hotelId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/hotelDetails/gethotelNumber`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              hotelid: hotelId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
+export const GetHotelAddress = async (hotelId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/hotelDetails/gethotelAddress`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              hotelid: hotelId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
+export const GetHotelEmails = async (hotelId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/hotelDetails/gethotelEmail`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              hotelid: hotelId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
 export const GetUserHotelDetails = async (hotelXipper) => {
     try {
         const token = await AsyncStorage.getItem('accessToken');
@@ -480,7 +540,7 @@ export const GetDepartments = async () => {
             });
         return response.data;
     } catch (err) {
-        console.log('Error fetching departments:', err.response.data, err);
+        console.log('Error fetching departments hotel:', err.response.data, err);
         return err.response;
     }
 }
@@ -501,10 +561,11 @@ export const GetPositions = async () => {
     }
 }
 
-export const GetEmployees = async () => {
+export const GetEmployees = async (xipperId) => {
     try {
         const token = await AsyncStorage.getItem('accessToken');
-        const response = await axios.get(`${BASE_URL}/hotel/sellerDashboard/getemployees?companyId=XC03829346`,
+        const cxipperId = 'XC30908138';
+        const response = await axios.get(`${BASE_URL}/hotel/sellerDashboard/getemployees?companyId=${cxipperId}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

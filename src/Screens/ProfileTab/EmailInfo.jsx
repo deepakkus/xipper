@@ -12,28 +12,74 @@ import { setPersonalInfo } from "../../redux/accountRedux";
 import CircularLoader from "../../components/CircularLoader";
 import DeleteModal from "../../modals/DeleteModal";
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {GetHotelEmails} from '../../services/hotelService';
+import {GetCompanyEmails} from '../../services/companyService';
+import ErrorModal from '../../modals/ErrorModal';
+
 
 const EmailInfo = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { personalInfo } = useSelector((state) => state.account);
+  const {selectedProfile} = useSelector(state => state.account);
   const [data, setData] = useState(personalInfo?.emails || []);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, SetErrorMsg] = useState('');
+  const [isErrorModalVisible, setErrorModalVisible] = useState(false);
+  const toggleErrorModal = () => setErrorModalVisible(!isErrorModalVisible);
+
+  const handleClose = () => {
+    toggleErrorModal();
+  };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
   const fetchEmails = async () => {
+   
     try {
       setLoading(true);
-      const res = await GetEmails();
-      dispatch(setPersonalInfo({ key: "emails", value: res.data }));
-      setData(res.data);
+        if (selectedProfile.type === 'user') {
+          const res = await GetEmails();
+          console.log(JSON.stringify(res))
+          dispatch(setPersonalInfo({ key: "emails", value: res.data }));
+          setData(res.data);
+            } else if (selectedProfile.type === 'hotel') {
+              const res = await GetHotelEmails(selectedProfile?.XipperID);
+              console.log(JSON.stringify(res.data?.data))
+              if (res.data.status === 'Success') {
+                dispatch(
+                  setPersonalInfo({
+                    key: 'emails',
+                    value: res.data?.data,
+                  }),
+                );
+                setData(res.data?.data);
+              } else if (res.data.status === 'Fail') {
+                setErrorModalVisible(true);
+                SetErrorMsg(res.data.message);
+              }
+            } else if (selectedProfile.type === 'company') {
+              const res = await GetCompanyEmails(selectedProfile?.XipperID);
+              console.log(JSON.stringify(res.data?.data))
+              if (res.data.status === 'Success') {
+                dispatch(
+                  setPersonalInfo({
+                    key: 'emails',
+                    value: res.data?.data,
+                  }),
+                );
+                setData(res.data?.data);
+              } else if (res.data.status === 'Fail') {
+                setErrorModalVisible(true);
+                SetErrorMsg(res.data.message);
+              }
+            }
     } catch (e) {
       console.log(e);
     } finally {
@@ -41,11 +87,14 @@ const EmailInfo = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (!personalInfo["emails"]) {
+  //     fetchEmails();
+  //   }
+  // }, [personalInfo]);
   useEffect(() => {
-    if (!personalInfo["emails"]) {
       fetchEmails();
-    }
-  }, [personalInfo]);
+  }, [selectedProfile]);
 
   const toggleDeleteModal = (item) => {
     setSelectedItem(item);
@@ -108,6 +157,7 @@ const EmailInfo = () => {
         <ProfileHeader navBack={'PersonalInfo'} />
        
         <Text className="font-psemibold text-lg text-black ">Email</Text>
+        {console.log('jjjj==='+JSON.stringify(data))}
         {data.length > 0
           ? data.map((item, index) => (
               <View
@@ -191,6 +241,17 @@ const EmailInfo = () => {
         onPress={toggleModal}
       />
       {loading && <CircularLoader />}
+      {
+        errorMsg ? (
+          <ErrorModal
+          isModalVisible={isErrorModalVisible}
+          toggleErrorModal={toggleErrorModal}
+          handleBack={handleClose}
+          heading={"Error!"}
+          content={errorMsg}
+          />
+        ) : ''
+      }
     </SafeAreaView>
   );
 };

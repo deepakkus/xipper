@@ -201,6 +201,7 @@ const Home = () => {
     try {
       setLoading(true);
       const res = await GetUserData();
+      console.log(JSON.stringify(res))
       dispatch(setUserData(res.data));
       const data = extractInfo(res.data);
       dispatch(setAvailableProfiles(data));

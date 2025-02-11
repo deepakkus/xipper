@@ -527,7 +527,7 @@ import {
   Alert,
   StyleSheet,
   Dimensions,
-  Pressable
+  Pressable,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -536,9 +536,17 @@ import {PhoneIcon, LocationIcon} from '../../assets/images/Icons/PersonalInfo';
 import {ThreeDotIcon, BackArrowIcon} from '../../assets/images/Icons/ArrowIcon';
 import {GetAddresses} from '../../services/profileService';
 import {setPersonalInfo} from '../../redux/accountRedux';
-import MapView, {Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT} from 'react-native-maps';
+import MapView, {
+  Marker,
+  PROVIDER_GOOGLE,
+  PROVIDER_DEFAULT,
+} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {GetHotelAddress} from '../../services/hotelService';
+import {GetCompanyAddress} from '../../services/companyService';
+import ErrorModal from '../../modals/ErrorModal';
+import CircularLoader from '../../components/CircularLoader';
 
 Geocoder.init('AIzaSyBzOzDZtVfDlIQ6f5avmkDc9ZItIy6gtNU');
 
@@ -546,6 +554,7 @@ const AddressBook = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {personalInfo} = useSelector(state => state.account);
+  const {selectedProfile} = useSelector(state => state.account);
   const [data, setData] = useState(personalInfo?.addresses || []);
   const [isModalVisible, setModalVisible] = useState(false);
   const [searchAddress, setSearchAddress] = useState('');
@@ -557,6 +566,15 @@ const AddressBook = () => {
     longitudeDelta: 0.0421,
   });
 
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, SetErrorMsg] = useState('');
+  const [isErrorModalVisible, setErrorModalVisible] = useState(false);
+  const toggleErrorModal = () => setErrorModalVisible(!isErrorModalVisible);
+
+  const handleClose = () => {
+    toggleErrorModal();
+  };
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     setMapError(null);
@@ -564,12 +582,45 @@ const AddressBook = () => {
 
   const fetchAddresses = async () => {
     try {
-      const res = await GetAddresses();
-      dispatch(setPersonalInfo({key: 'addresses', value: res}));
-      setData(res);
+      setLoading(true);
+      if (selectedProfile.type === 'user') {
+        const res = await GetAddresses();
+        dispatch(setPersonalInfo({key: 'addresses', value: res}));
+        setData(res);
+      } else if (selectedProfile.type === 'hotel') {
+        const res = await GetHotelAddress(selectedProfile?.XipperID);
+        if (res.data.status === 'Success') {
+          dispatch(
+            setPersonalInfo({
+              key: 'addresses',
+              value: res.data?.data?.addresses,
+            }),
+          );
+          setData(res.data?.data?.addresses);
+        } else if (res.data.status === 'Fail') {
+          setErrorModalVisible(true);
+          SetErrorMsg(res.data.message);
+        }
+      } else if (selectedProfile.type === 'company') {
+        const res = await GetCompanyAddress(selectedProfile?.XipperID);
+        if (res.data.status === 'Success') {
+          dispatch(
+            setPersonalInfo({
+              key: 'addresses',
+              value: res.data?.data?.addresses,
+            }),
+          );
+          setData(res.data?.data?.addresses);
+        } else if (res.data.status === 'Fail') {
+          setErrorModalVisible(true);
+          SetErrorMsg(res.data.message);
+        }
+      }
     } catch (e) {
       console.log(e);
       Alert.alert('Error', 'Failed to fetch addresses');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -596,11 +647,14 @@ const AddressBook = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (!personalInfo['addresses']) {
+  //     fetchAddresses();
+  //   }
+  // }, [personalInfo]);
   useEffect(() => {
-    if (!personalInfo['addresses']) {
-      fetchAddresses();
-    }
-  }, [personalInfo]);
+    fetchAddresses();
+  }, [selectedProfile]);
 
   const MapScreen = () => (
     <View style={styles.mapContainer}>
@@ -619,7 +673,9 @@ const AddressBook = () => {
 
       <MapView
         //provider={PROVIDER_GOOGLE}
-        provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+        provider={
+          Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+        }
         style={styles.map}
         region={mapRegion}
         showsUserLocation={true}
@@ -649,6 +705,17 @@ const AddressBook = () => {
           </Text>
         </View>
       )}
+      {errorMsg ? (
+        <ErrorModal
+          isModalVisible={isErrorModalVisible}
+          toggleErrorModal={toggleErrorModal}
+          handleBack={handleClose}
+          heading={'Error!'}
+          content={errorMsg}
+        />
+      ) : (
+        ''
+      )}
     </View>
   );
 
@@ -658,14 +725,15 @@ const AddressBook = () => {
         <MapScreen />
       ) : (
         <>
-          <ProfileHeader navBack={'PersonalInfo'}/>
-      
+          <ProfileHeader navBack={'PersonalInfo'} />
+
           <View className="p-6">
             <Text style={styles.title}>Address Book</Text>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={styles.scrollView}>
+            {loading && <CircularLoader />}
             {data.length > 0 ? (
               data.map((item, index) => (
                 <View key={index} style={styles.addressCard}>
@@ -687,6 +755,17 @@ const AddressBook = () => {
             ) : (
               <Text style={styles.noAddressText}>No addresses found.</Text>
             )}
+            {
+              errorMsg ? (
+                <ErrorModal
+                isModalVisible={isErrorModalVisible}
+                toggleErrorModal={toggleErrorModal}
+                handleBack={handleClose}
+                heading={"Error!"}
+                content={errorMsg}
+                />
+              ) : ''
+            }
           </ScrollView>
           <View className="p-4 bg-gray-100">
             <AddButton
@@ -830,11 +909,11 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
-  backBtn:{
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 20,
-  }
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
 });
 
 export default AddressBook;

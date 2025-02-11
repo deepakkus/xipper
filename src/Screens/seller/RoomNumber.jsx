@@ -26,7 +26,7 @@ const RoomNumber = () => {
         <Pressable style={styles.backIcon} onPress={() => navigation.navigate('GuestCheckOut')}>
           <BackArrowIcon />
         </Pressable>
-        <Pressable style={styles.crossIcon}>
+        <Pressable onPress={() => navigation.goBack()} style={styles.crossIcon}>
           <CrossIcon />
         </Pressable>
       </View>

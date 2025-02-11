@@ -30,18 +30,27 @@ const HomeHeader = ({ handleRoomClick = () => { }, isBusiness, toggleBusiness, i
     const monthName = date.toLocaleDateString('en-US', { month: 'long' });
     return `${dayName}, ${dayNumber} ${monthName}`;
   };
-
   const handleClick = (data) => {
     const transformedData = {
       XipperID: data.roomAllocation.room.hotelId,
       roomNumber: data.roomAllocation.room.roomNumber,
-      name: data.UserCheckIn.hotel.name,
-      checkInId: data.UserCheckIn.hotelCheckInId,
-      totalGuests: data.UserCheckIn.totalGuests,
-      totalRooms: data.UserCheckIn.totalRooms,
+      name: data.HotelCheckIn?.hotel?.name,
+      checkInId: data.HotelCheckIn.hotelCheckInId,
+      totalGuests: data.HotelCheckIn.totalGuests,
+      totalRooms: data.HotelCheckIn.totalRooms,
       cXipperId: data.cXipperId,
       bookingId: data.bookingId,
     };
+    // const transformedData = {
+    //   XipperID: data.roomAllocation.room.hotelId,
+    //   roomNumber: data.roomAllocation.room.roomNumber,
+    //   name: data.UserCheckIn.hotel.name,
+    //   checkInId: data.UserCheckIn.hotelCheckInId,
+    //   totalGuests: data.UserCheckIn.totalGuests,
+    //   totalRooms: data.UserCheckIn.totalRooms,
+    //   cXipperId: data.cXipperId,
+    //   bookingId: data.bookingId,
+    // };
     handleRoomClick(transformedData);
   };
 
@@ -91,7 +100,8 @@ const HomeHeader = ({ handleRoomClick = () => { }, isBusiness, toggleBusiness, i
                   className="bg-emerald-400 px-4 py-2 rounded-md shadow-md flex-1 mr-2"
                   onPress={() => handleClick(i)}
                 >
-                  <Text className="text-white text-sm">{i.UserCheckIn.hotel.name} - {i.roomAllocation.room.roomNumber}</Text>
+                   {/* <Text className="text-white text-sm">{i.UserCheckIn.hotel.name} - {i.roomAllocation.room.roomNumber}</Text> */}
+                  <Text className="text-white text-sm">{i.HotelCheckIn?.hotel?.name} - {i.roomAllocation.room.roomNumber}</Text>
                 </Pressable>
 
                 <Pressable

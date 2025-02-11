@@ -10,6 +10,7 @@ import { GetHotelCustomerDetails } from '../../services/hotelService';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBookingDetails } from '../../redux/businessRedux';
+import { CheckOutGuest, GetCustomersList } from '../../services/sellerService';
 
 const Customer = () => {
   const navigation = useNavigation();
@@ -19,11 +20,12 @@ const Customer = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (data) => {
+    console.log(JSON.stringify(data))
     const arr = data.guests.map(i => {
       return {
         ...i,
         user: {
-          address: [...i.address],
+          //address: [...i.address],
           contactEmails: [{ email: i.email }],
           contactNumbers: [{ number: i.phone }],
           fullName: i.guestName,
@@ -43,9 +45,10 @@ const Customer = () => {
   const getCustomerDetails = async () => {
     try {
       setLoading(true);
-      const res = await GetHotelCustomerDetails(selectedProfile.XipperID);
-      console.log(JSON.stringify(res.data.data))
-      setCustomers(res.data.data);
+      //const res = await GetHotelCustomerDetails(selectedProfile.XipperID);
+       const res = await GetCustomersList(selectedProfile.XipperID);
+      console.log(JSON.stringify(res.data.data.bookingDetails))
+      setCustomers(res.data.data.bookingDetails);
     } catch (e) {
       console.log(e);
     } finally {

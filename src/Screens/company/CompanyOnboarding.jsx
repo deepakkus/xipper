@@ -69,9 +69,8 @@ const CompanyOnboarding = () => {
     try {
       setLoading(true);
       const res = await GetCompanyList();
-      console.log(res);
-      if (res && res.result) {
-        setCompanyList(res.result);
+      if (res && res?.data?.result) {
+        setCompanyList(res?.data?.result);
       }
     } catch (e) {
       console.log(e);
@@ -503,6 +502,7 @@ const CompanyOnboarding = () => {
 
     return (
       <View style={styles.inputContainer}>
+
         {step.fields.map((field, index) => {
           switch (field.type) {
             case 'select':
@@ -512,17 +512,19 @@ const CompanyOnboarding = () => {
                 {loading ? (
                   <ActivityIndicator size="small" color="#0000ff" />
                 ) : (
-                  <Picker
-                    selectedValue={formData[field.field]}
-                    onValueChange={(value) => handleInputChange(field.field, value)}
-                    style={styles.picker}
-                    placeholder="Select Company Type"
-                  >
-                    <Picker.Item label="Select" value="" />
-                    {companyList.map((companyType, index) => (
-                      <Picker.Item key={index} label={companyType} value={companyType} />
-                    ))}
-                  </Picker>
+                  <View>
+                    <Picker
+                      selectedValue={formData[field.field]}
+                      onValueChange={(value) => handleInputChange(field.field, value)}
+                      style={styles.picker}
+                      placeholder="Select Company Type"
+                    >
+                      <Picker.Item label="Select" value="" />
+                      {companyList.map((companyType, index) => (
+                        <Picker.Item key={index} label={companyType} value={companyType} />
+                      ))}
+                    </Picker>
+                  </View>
                 )}
               </View>
           
@@ -849,7 +851,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 10
   },
   verifyButton: {
     backgroundColor: "#06A77D",

@@ -18,26 +18,64 @@ import CircularLoader from '../../components/CircularLoader';
 import {getTextClassInstance} from '../../utils/TextClass';
 import {BackArrowIcon, CopyIcon} from '../../assets/images/Icons/ArrowIcon';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {GetHotelPhoneNumbers} from '../../services/hotelService';
+import {GetCompanyPhoneNumbers} from '../../services/companyService';
+import ErrorModal from "../../modals/ErrorModal";
 
 const PhoneNumber = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {personalInfo} = useSelector(state => state.account);
   const [data, setData] = useState(personalInfo?.phoneNumbers || []);
+  const {selectedProfile} = useSelector(state => state.account);
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, SetErrorMsg] = useState('');
+  const [isErrorModalVisible, setErrorModalVisible] = useState(false);
+  const toggleErrorModal = () => setErrorModalVisible(!isErrorModalVisible);
+
+  const handleClose = () => {
+        toggleErrorModal();
+  };
 
   const textClass = getTextClassInstance();
 
   const fetchPhoneNumbers = async () => {
     try {
       setLoading(true);
-      const res = await GetPhoneNumbers();
-      dispatch(setPersonalInfo({key: 'phoneNumbers', value: res.data}));
-      setData(res.data);
+      if (selectedProfile.type === 'user') {
+        const res = await GetPhoneNumbers();
+          dispatch(setPersonalInfo({key: 'phoneNumbers', value: res.data}));
+          setData(res.data);
+      } else if (selectedProfile.type === 'hotel') {
+          const res = await GetHotelPhoneNumbers(selectedProfile?.XipperID);
+          if (res.data.status === 'Success') {
+            dispatch(
+              setPersonalInfo({key: 'phoneNumbers', value: res.data?.data?.data}),
+            );
+            setData(res.data?.data?.data);
+          }
+          else if(res.data.status === "Fail"){
+            setErrorModalVisible(true);
+            SetErrorMsg(res.data.message);
+          }
+      } else if (selectedProfile.type === 'company') {
+        const res = await GetCompanyPhoneNumbers(selectedProfile?.XipperID);
+        if (res.data.status === 'Success') {
+          dispatch(
+            setPersonalInfo({key: 'phoneNumbers', value: res.data?.data?.data}),
+          );
+          setData(res.data?.data?.data);
+        }
+        else if(res.data.status === "Fail"){
+          setErrorModalVisible(true);
+          SetErrorMsg(res.data.message);
+        }
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -46,10 +84,11 @@ const PhoneNumber = () => {
   };
 
   useEffect(() => {
-    if (!personalInfo['phoneNumbers']) {
-      fetchPhoneNumbers();
-    }
-  }, [personalInfo]);
+    //if (!personalInfo['phoneNumbers']) {
+    // if (!personalInfo['phoneNumber']) {
+    fetchPhoneNumbers();
+    //}
+  }, [selectedProfile]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -114,8 +153,8 @@ const PhoneNumber = () => {
 
   return (
     <SafeAreaView className="flex-1 px-5 bg-gray-100 mt-2">
-      <ProfileHeader navBack={'PersonalInfo'}/>
-     
+      <ProfileHeader navBack={'PersonalInfo'} />
+
       <Text className="font-psemibold text-lg text-black">
         {textClass.getTextString('TXT1')}
       </Text>
@@ -194,6 +233,17 @@ const PhoneNumber = () => {
         onPress={toggleModal}
       />
       {loading && <CircularLoader />}
+      {
+        errorMsg ? (
+          <ErrorModal
+          isModalVisible={isErrorModalVisible}
+          toggleErrorModal={toggleErrorModal}
+          handleBack={handleClose}
+          heading={"Error!"}
+          content={errorMsg}
+          />
+        ) : ''
+      }
     </SafeAreaView>
   );
 };

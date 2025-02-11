@@ -3,7 +3,66 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../Screens/helper";
 
-
+export const GetCompanyProfile = async (companyId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/company/profile`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              companyid: companyId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
+export const GetCompanyPhoneNumbers = async (companyId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/company/phone`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              //companyid: companyId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
+export const GetCompanyAddress = async (companyId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/company/address`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              //companyid: companyId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
+export const GetCompanyEmails = async (companyId) => {
+    try {
+        const token = await AsyncStorage.getItem('accessToken');
+        const response = await axios.get(`${BASE_URL}/company/email`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              //companyid: companyId
+            },
+          });
+        return response;
+    } catch (err) {
+        console.log('Error getting company profile:----------------', err.response, err);
+        return err.response
+    }
+};
 export const GetCompanyDashboard = async (id) => {
     try {
         const token = await AsyncStorage.getItem('accessToken');

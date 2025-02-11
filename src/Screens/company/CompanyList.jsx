@@ -20,14 +20,13 @@ const CompanyList = () => {
     setVisibleMenuIndex(visibleMenuIndex === index ? null : index);
   };
 
-  console.log('jj999gg'+ JSON.stringify(pendingRegistrations))
   const fetchData = async () => {
     try {
       setLoading(true);
       const res = await GetPendingRegistrationList();
-      console.log('jjgg'+ JSON.stringify(res))
-      dispatch(setPendingRegistrationList(res.data.data.pendingRegistrations))
-      res.data.data.pendingRegistrations.length === 0 && nav.navigate("Account/CompanyOnboading");
+      dispatch(setPendingRegistrationList(res?.data?.data?.pendingRegistrations))
+      //res?.data?.data?.pendingRegistrations.length === 0 && nav.navigate("Account/CompanyOnboading");
+      res?.data?.data?.pendingRegistrations.length === 0 && nav.navigate("CompanyRegistration");
     } catch (e) {
       console.log(e);
     } finally {
@@ -80,7 +79,8 @@ const CompanyList = () => {
 
     try {
       await dispatch(setResumeRegistrationCompany(tempData));
-      nav.navigate("Account/CompanyOnboading");
+      //nav.navigate("Account/CompanyOnboading");
+      nav.navigate("CompanyRegistration");
     } catch (error) {
       console.log("Failed to dispatch registration data:", error);
     }
@@ -114,7 +114,7 @@ const CompanyList = () => {
           <View key={index} style={styles.companyContainer}>
             <View style={styles.companyInfo}>
               <Text style={styles.companyName}>{company.name}</Text>
-              {company.id ? <Text style={styles.companyId}>{company.id}</Text> : null}
+              {/* {company.id ? <Text style={styles.companyId}>{company.id}</Text> : null} */}
             </View>
             <Pressable onPress={(e) => {
                e.stopPropagation(); 
@@ -139,7 +139,8 @@ const CompanyList = () => {
         )) : (
           <View className="flex flex-col items-center justify-center">
             <Pressable className="flex flex-row items-center gap-2 p-2 rounded-lg border-gray-300 border-2"
-              onPress={() => nav.navigate("Account/CompanyOnboading")}>
+              //onPress={() => nav.navigate("Account/CompanyOnboading")}>
+                onPress={() => nav.navigate("Account/CompanyRegistration")}>
               <AddIcon />
               <Text className="mb-2 font-bold">Add Company</Text>
             </Pressable>

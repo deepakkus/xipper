@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View, Text, Pressable } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, Pressable, Platform } from 'react-native';
 import BookingDetails from './BookingDetails';
 import GuestDetails from './GuestDetails';
 import Orders from './Order';
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    paddingTop: Platform.OS === 'ios'? 22 : 0,
   },
   backButton: {
     marginRight: 16,

@@ -39,6 +39,7 @@ const Buffet = ({ type }) => {
                 const cartItem = cartItems.find(cartItem => cartItem.itemName === item.name);
                 return cartItem ? { ...item, quantity: cartItem.quantity } : { ...item, quantity: 0 };
             });
+            console.log('updatedItems=='+JSON.stringify(updatedItems))
             setItems(updatedItems);
         } catch (error) {
             console.error("Error fetching F&B items:", error);
@@ -68,7 +69,7 @@ const Buffet = ({ type }) => {
             };
 
             const res = await AddFandBItemsToCart(payload);
-
+            console.log('res.data.data.cart=='+ JSON.stringify(res))
             if (res.data.message === "Cart not found" || res.data.cart === "Cart Empty") {
                 setCartId("");
                 setItems(items.map(item => ({ ...item, quantity: 0 })));

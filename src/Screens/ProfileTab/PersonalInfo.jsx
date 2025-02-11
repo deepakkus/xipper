@@ -19,9 +19,10 @@ import { getTextClassInstance } from "../../utils/TextClass";
 const PersonalInfo = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { profileData, selectedProfile } = useSelector((state) => state.account);
+    const { profileData, selectedProfile, userData } = useSelector((state) => state.account);
     const [loading, setLoading] = useState(false);
     const textClass = getTextClassInstance();
+    console.log(JSON.stringify(profileData))
 
     const fetchProfileDetails = async () => {
         try {
