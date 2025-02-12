@@ -19,8 +19,9 @@ const NotificationItem = ({ data, onPress = () => { } }) => (
             <Text className="text-lg font-semibold mb-1 text-black">{data.title}</Text>
             <Text className="text-gray-600">{data.message}</Text>
         </View>
-        {!["read-only", "hotel-checkin-invite-accepted", "family-request-accepted", "company-invite-accepted"].includes(data.type)
-            && !["Accepted", "Rejected"].includes(data.actionStatus) && (
+        {!["read-only", "hotel-checkin-invite-accepted", "family-request-accepted", "company-invite-accepted", "hotel-checkin-invite-rejected"].includes(data.type)
+            // && !["Accepted", "Rejected"].includes(data.actionStatus) && (
+            && !["read-only"].includes(data.actionStatus) && (
                 <View className="flex flex-row items-center p-2">
                     <Pressable
                         className="p-2 rounded-lg mx-1"
@@ -54,8 +55,7 @@ const Notifications = () => {
         try {
             setLoading(true);
             const res = await GetNotificationList();
-            console.log('rrrrrrr'+ JSON.stringify(res.data.data.notifications))
-            setNotification(res.data.data.notifications);
+            setNotification(res.data?.data?.notifications);
         } catch (e) {
             console.log(e);
         } finally {
@@ -74,7 +74,11 @@ const Notifications = () => {
                 await AcceptFamilyRequest(val, data)
             } else if (data.type === "company-invite") {
                 await AcceptCompanyNotification(val, data);
-            } else {
+            } 
+            // else if (data.type === "hotel-checkin-invite") {
+            //     await AcceptCompanyNotification(val, data);
+            // } 
+            else {
                 await AcceptNotifications(val, data);
             }
         } catch (e) {
@@ -87,12 +91,12 @@ const Notifications = () => {
 
     return (
         <SafeAreaProvider>
-            <View className= {Platform.OS === 'ios' ?  "p-10 h-full" :  "p-4 h-full"}>
+            <View className= {Platform.OS === 'ios' ?  "p-8 h-full" :  "p-4 h-full"}>
                 <View className="flex items-center flex-row gap-10">
-                    <Pressable onPress={() => nav.goBack()} className="h-auto pb-3">
+                    <Pressable onPress={() => nav.goBack()} className="h-auto mt-5 pb-3">
                         <BackArrowIcon />
                     </Pressable>
-                    <View className="mt-4">
+                    <View className={Platform.OS === 'ios' ?  "mt-15" :  "mt-4"}>
                         <Text className="text-2xl font-bold mb-4 text-black text-center ml-11">Notifications</Text>
                     </View>
                 </View>

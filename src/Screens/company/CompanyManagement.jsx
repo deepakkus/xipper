@@ -9,7 +9,7 @@ import {
   TextInput,
   FlatList,
   Platform,
-  Alert
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SearchBar from '../../components/SearchBar';
@@ -153,43 +153,39 @@ const CompanyManagement = () => {
     }
   };
 
-  const result = selectedName?.reduce((a, c) => {
-    const split = c.split('-');
-    a.empNames.push(split[0]);
-    a.empIds.push(split[1]?.trim());
-    return a;
-  }, { empNames: [], empIds: [] });
-
-  const { empNames, empIds } = result;
-
   const getEmployee = async () => {
     try {
       setIsLoading(true);
-      
+
       if (
+        selectedName.length === 0 ||
         selectedDepartments.length === 0 ||
         selectedPositions.length === 0 ||
-        selectedRoles.length === 0 ||
-        empIds === 0
+        selectedRoles.length === 0
       ) {
         setError('Please fill in all details');
         return;
       } else {
         setError('');
-        const response = await AddEmployee( 
-            empIds[0],
-            selectedDepartments,
-            selectedRoles[0],
-            selectedPositions,
-            selectedProfile.XipperID,
-            selectedOptions);
-        console.log("resAddepl=="+JSON.stringify(response))
 
-        if (response.data.status === 200) {
-          Alert.alert('Success')
-          //setIsModalVisible(false);
+        let empIds;
+        if (selectedName) {
+          var match = selectedName?.match(/-\s*(\w+)/);
+          empIds = match[1];
         }
-        else {
+        
+        const response = await AddEmployee(
+          empIds,
+          selectedDepartments,
+          selectedRoles[0],
+          selectedPositions,
+          selectedProfile.XipperID,
+          selectedOptions,
+        );
+        if (response.data.status === 200) {
+          Alert.alert('Success');
+          setIsModalVisible(false);
+        } else {
           setError(response.data.message);
           console.log('Error in inviting user: ');
         }
@@ -273,8 +269,8 @@ const CompanyManagement = () => {
       const response = await GetCompanyRoles();
       if (response.status === 'Success') {
         if (response.data?.result) {
-        console.log('Setting roles:', response.data?.result);
-        setRoleSuggestion(response.data?.result);
+          console.log('Setting roles:', response.data?.result);
+          setRoleSuggestion(response.data?.result);
         }
       }
     } catch (error) {
@@ -290,8 +286,8 @@ const CompanyManagement = () => {
       const response = await GetRoles();
       if (response.status === 'Success') {
         if (response.data?.result) {
-        console.log('Setting hotel roles:', response.data?.result);
-        setRoleSuggestion(response.data?.result);
+          console.log('Setting hotel roles:', response.data?.result);
+          setRoleSuggestion(response.data?.result);
         }
       }
     } catch (error) {
@@ -306,7 +302,7 @@ const CompanyManagement = () => {
       setIsLoading(true);
       const response = await GetCompanyDepartments();
       if (response.status === 'Success') {
-          if (response.data?.result) {
+        if (response.data?.result) {
           console.log('Setting departments:', response.data?.result);
           setDepartmentSuggestions(response.data?.result);
         }
@@ -329,7 +325,7 @@ const CompanyManagement = () => {
       }
     } catch (error) {
       console.error('Error fetching departments:', error);
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -360,9 +356,6 @@ const CompanyManagement = () => {
           //.map(item => item.user?.fullName)
           .map(item => `${item?.user?.fullName} - ${item.XipperID}`)
           .filter(name => name);
-
-          // const data = response.data.data
-          // const emp = data?.result?.map(item => `${item?.user?.fullName} - ${item.XipperID}`)
 
         console.log('Setting Name Suggestions:', fullNames);
         setNameSuggestions(fullNames);
@@ -772,9 +765,10 @@ const CompanyManagement = () => {
                       onPress={toggleDropdownname}
                       className="flex-row items-center justify-between border px-3 border-gray-200 rounded-xl py-3">
                       <Text className="text-sm text-gray-700">
-                        {selectedName.length > 0
+                        {/* {selectedName.length > 0
                           ? selectedName.join(', ')
-                          : 'Enter Name'}
+                          : 'Enter Name'} */}
+                        {selectedName.length > 0 ? selectedName : 'Enter Name'}
                       </Text>
                       <Text className="text-gray-400">
                         {isDropdownOpenName ? '▲' : '▼'}
@@ -809,7 +803,8 @@ const CompanyManagement = () => {
                               <Pressable
                                 onPress={() => {
                                   if (!selectedName.includes(item)) {
-                                    setSelectedName([...selectedName, item]);
+                                    //setSelectedName([...selectedName, item]);
+                                    setSelectedName(item);
                                     setIsDropdownOpenName(false);
                                     setSearchTextName('');
                                   }
@@ -1014,8 +1009,11 @@ const CompanyManagement = () => {
                     onPress={toggleDropdown}
                     className="flex-row items-center justify-between border px-3 border-gray-200 rounded-xl py-3">
                     <Text className="text-sm text-gray-700">
-                      {selectedRoles.length > 0
+                      {/* {selectedRoles.length > 0
                         ? selectedRoles.join(', ')
+                        : 'Select Role'} */}
+                        {selectedRoles.length > 0
+                        ? selectedRoles
                         : 'Select Role'}
                     </Text>
                     <Text className="text-gray-400">
@@ -1051,6 +1049,7 @@ const CompanyManagement = () => {
                               onPress={() => {
                                 if (!selectedRoles.includes(item)) {
                                   setSelectedRoles([...selectedRoles, item]);
+                                  //setSelectedRoles(item);
                                   setIsDropdownOpen(false);
                                   setSearchText('');
                                 }
@@ -1103,7 +1102,9 @@ const CompanyManagement = () => {
                     </Text>
                   </Pressable>
                 )}
-                {error && <Text className="p-2 text-red-800 font-bold">{error}</Text>}
+                {error && (
+                  <Text className="p-2 text-red-800 font-bold">{error}</Text>
+                )}
                 <View>
                   {selectedProfile.type === 'hotel' && (
                     <>

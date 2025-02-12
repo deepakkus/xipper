@@ -57,14 +57,14 @@ const HomeHeader = ({ handleRoomClick = () => { }, isBusiness, toggleBusiness, i
   return (
     <>
       <View
-       className= {Platform.OS === 'ios' ? `bg-${selectedProfile.type} gap-4 p-5 py-12 shadow-xl` : `bg-${selectedProfile.type} gap-4 p-5 shadow-xl`}
+       className= {Platform.OS === 'ios' ? `bg-${selectedProfile.type} gap-4 p-5 pt-10 shadow-xl` : `bg-${selectedProfile.type} gap-4 p-5 shadow-xl`}
         style={{
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 30,
         }}
       >
         <View
-          className={`flex-row justify-between ${["user", "company"].includes(selectedProfile.type) ? "items-center" : "items-start px-3"}`}
+          className={`flex-row justify-between ${["user", "company"].includes(selectedProfile.type) ? "items-center mb-[-15]" : "items-start px-3 mb-[-15]"}`}
         >
           {(selectedProfile.type === 'user' || selectedProfile.type === 'company') ? (
             <SearchBar
@@ -74,19 +74,19 @@ const HomeHeader = ({ handleRoomClick = () => { }, isBusiness, toggleBusiness, i
               style={{ flex: 1 }}
             />
           ) : (
-            <View>
-              <Text className="text-white text-xl font-bold">{truncateText(userData?.user?.fullName)}</Text>
-              <Text className="text-white text-lg">{getCurrentDate()}</Text>
+            <View style={{ marginTop: 28 }}>
+              <Text className="text-white text-xl font-bold"> {userData?.user?.fullName ? 'Hi, '+ truncateText(userData?.user?.fullName) : ''}</Text>
+              <Text className="text-white text-lg font-bold">{getCurrentDate()}</Text>
             </View>
           )}
 
           <Pressable onPress={handleSubmit}>
-            <View className="flex-row items-center ml-2 mt-1">
+            <View className="flex-row items-center ml-2 mt-5">
               <NonBusinessBellIcon size={100} />
             </View>
             <View
               className={`${!isBusiness ? "bg-tertiary" : "bg-primary"
-                } w-2 h-2 rounded-lg absolute right-1 top-0`}
+                } w-2 h-2 rounded-lg absolute right-1 top-5`}
             ></View>
           </Pressable>
         </View>
@@ -97,7 +97,7 @@ const HomeHeader = ({ handleRoomClick = () => { }, isBusiness, toggleBusiness, i
             {selectedProfile.userCheckInInfo.map((i, ind) => (
               <View className="flex flex-row justify-between items-center" key={ind}>
                 <Pressable
-                  className="bg-emerald-400 px-4 py-2 rounded-md shadow-md flex-1 mr-2"
+                  className="bg-emerald-400 px-4 py-2 rounded-md shadow-md flex-1 mr-1"
                   onPress={() => handleClick(i)}
                 >
                    {/* <Text className="text-white text-sm">{i.UserCheckIn.hotel.name} - {i.roomAllocation.room.roomNumber}</Text> */}

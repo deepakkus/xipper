@@ -216,7 +216,7 @@ const MenuModal = ({ visible, onClose, onSelectOption }) => {
 
 
   return (
-    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose} shouldRasterizeIOS >
+    <Modal animationType="none" transparent={true} visible={visible} onRequestClose={onClose} shouldRasterizeIOS >
       <Pressable
         style={{ flex: 1, justifyContent: "flex-end", alignItems: "flex-end" }}
         onPress={onClose}>

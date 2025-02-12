@@ -387,10 +387,10 @@ export const AddEmployee = async(xipperId, department, role, position, sXipperId
         //     "accessList": ["CAN_ACCESS_WALLET", "CAN_ACCESS_INBOX"]
         // }
         const payload = {
-            "xipperId": 'X651210446',//xipperId,
+            "xipperId": xipperId,//'X651210446',
             "departments": department,
             "positions": position,
-            "role": role[0],
+            "role": role,
             "hXipperId": sXipperId,
             "accessList": accessList
         }

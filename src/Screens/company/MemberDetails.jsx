@@ -80,7 +80,7 @@ const MemberDetails = () => {
                         key={index}
                         className="w-full flex flex-col items-center justify-between rounded-lg border border-gray-200 mb-4"
                     >
-                        <View className="flex flex-row items-center justify-between mt-4">
+                        <View className="flex flex-row justify-between w-full mt-4 p-2">
                             <View>
                                 <Text className="text-[#00000099] text-sm">{item.entityKey}</Text>
                                 <Text className="text-black text-sm font-medium">{item.entityValue}</Text>

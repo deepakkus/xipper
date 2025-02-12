@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: "#E0E0E0",
+    marginTop:15,
   },
   focused: {
     borderColor: "#1E90FF", // Blue border when focused

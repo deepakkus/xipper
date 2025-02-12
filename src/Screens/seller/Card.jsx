@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 15,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         elevation: 5,
         width: 115, 
         height: 88, 
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: '100%',
         overflow: 'hidden',
+        fontWeight: '600'
     },
     cardAmount: {
         fontSize: 16,
